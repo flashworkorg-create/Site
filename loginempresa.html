@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Criar Conta Empresa - Flashwork</title>
+<style>
+body{margin:0;font-family:Arial;background:#fbf3fb;color:#333}
+
+nav{display:flex;justify-content:space-between;align-items:center;background:#7e4aa3;padding:12px 30px}
+.nav-left{color:#fff;font-weight:bold}
+.nav-btn{background:#fff;color:#9562b8;border:none;padding:8px 14px;border-radius:6px;cursor:pointer}
+
+.container{display:grid;grid-template-columns:1fr 1fr;min-height:100vh}
+
+.left{background:linear-gradient(135deg,#9562b8,#7e4aa3);color:#fff;display:flex;flex-direction:column;justify-content:center;padding:60px}
+.left h1{font-size:2.5em}
+.left p{font-size:1.2em;opacity:0.9}
+
+.right{display:flex;align-items:center;justify-content:center}
+
+.form-box{background:#fff;padding:40px;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,0.1);width:100%;max-width:520px}
+.form-box h2{margin-bottom:10px;color:#9562b8}
+
+.progress{height:6px;background:#eee;border-radius:10px;margin-bottom:20px;overflow:hidden}
+.progress-bar{height:100%;width:50%;background:#9562b8}
+
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.full{grid-column:1/3}
+
+label{font-size:12px;color:#777}
+.input{width:100%;padding:12px;border:1px solid #ddd;border-radius:8px;margin-top:5px;transition:.2s}
+.input:focus{outline:none;border-color:#9562b8;box-shadow:0 0 0 2px rgba(149,98,184,0.2)}
+
+.btn{width:100%;background:#9562b8;color:#fff;border:none;padding:14px;border-radius:10px;cursor:pointer;margin-top:20px;transition:.3s}
+.btn:hover{background:#7e4aa3;transform:translateY(-2px)}
+
+.link{margin-top:15px;font-size:14px;text-align:center}
+.link a{color:#9562b8;text-decoration:none}
+
+@media(max-width:800px){
+.container{grid-template-columns:1fr}
+.left{display:none}
+.form-grid{grid-template-columns:1fr}
+.full{grid-column:1}
+}
+</style>
+</head>
+<body>
+
+<nav>
+<div class="nav-left">Flashwork</div>
+<button class="nav-btn" onclick="history.back()">← Voltar</button>
+</nav>
+
+<div class="container">
+
+<div class="left">
+<h1>Crie sua conta empresa</h1>
+<p>Leva menos de 2 minutos. Sem burocracia.</p>
+</div>
+
+<div class="right">
+<div class="form-box">
+<h2>Cadastro</h2>
+<div class="progress"><div class="progress-bar"></div></div>
+
+<div class="form-grid" id="form">
+
+<div class="full">
+<label>Seu e-mail corporativo</label>
+<input class="input" id="email" type="email" required>
+</div>
+
+<div>
+<label>Nome</label>
+<input class="input" id="nome" type="text" required>
+</div>
+
+<div>
+<label>Sobrenome</label>
+<input class="input" id="sobrenome" type="text" required>
+</div>
+
+<div>
+<label>Celular</label>
+<input class="input" id="celular" type="text" pattern="[0-9]+" required>
+</div>
+
+<div>
+<label>Telefone fixo</label>
+<input class="input" id="telefone" type="text" pattern="[0-9]+">
+</div>
+
+<div class="full">
+<label>Cargo</label>
+<input class="input" id="cargo" type="text" required>
+</div>
+
+<div class="full">
+<label>Nome da empresa</label>
+<input class="input" id="empresa" type="text" required>
+</div>
+
+<div>
+<label>CEP</label>
+<input class="input" id="cep" type="text" pattern="[0-9]+" required>
+</div>
+
+<div>
+<label>CNPJ</label>
+<input class="input" id="cnpj" type="text" pattern="[0-9]+" required>
+</div>
+
+<div class="full">
+<label>Nº de funcionários</label>
+<input class="input" id="funcionarios" type="number" required>
+</div>
+
+</div>
+
+<button class="btn" onclick="criarConta()">Criar conta</button>
+
+<div class="link">
+Já tem conta? <a href="login.html">Entrar</a>
+</div>
+
+</div>
+</div>
+
+</div>
+
+<script>
+function criarConta(){
+ const inputs = document.querySelectorAll('#form input');
+ for(let input of inputs){
+   if(!input.checkValidity() || input.value.trim()===''){
+     alert('Preencha todos os campos corretamente!');
+     input.focus();
+     return;
+   }
+ }
+
+ const celular = document.getElementById('celular').value;
+ if(!/^\d+$/.test(celular)){
+   alert('Celular deve conter apenas números');
+   return;
+ }
+
+ alert('Conta criada com sucesso!');
+ window.location.href = 'index.html';
+}
+</script>
+</body>
+</html>

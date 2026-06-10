@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vagas - Flashwork</title>
+<style>
+body{margin:0;font-family:Arial;background:#f7f4fa;color:#333}
+
+nav{display:flex;justify-content:space-between;align-items:center;background:#7e4aa3;padding:12px 30px;flex-wrap:wrap;gap:15px}
+.nav-left{color:#fff;font-weight:bold}
+.nav-links{display:flex;gap:20px}
+.nav-links a{color:#fff;text-decoration:none}
+
+.container{display:grid;grid-template-columns:250px 1fr;gap:20px;padding:20px}
+
+/* FILTROS */
+.sidebar{background:#fff;padding:20px;border-radius:12px;box-shadow:0 5px 15px rgba(0,0,0,0.08)}
+.sidebar h3{margin-top:0}
+.filter{margin-bottom:15px}
+.filter input, .filter select{width:100%;padding:8px;border-radius:6px;border:1px solid #ddd}
+
+/* LISTA */
+.jobs{display:flex;flex-direction:column;gap:15px}
+.job-card{background:#fff;padding:20px;border-radius:12px;box-shadow:0 5px 15px rgba(0,0,0,0.08);transition:.3s}
+.job-card:hover{transform:translateY(-5px)}
+.job-title{font-size:18px;font-weight:bold;color:#9562b8}
+.job-info{font-size:14px;margin:8px 0;color:#666}
+.job-actions{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+.btn{background:#9562b8;color:#fff;border:none;padding:8px 14px;border-radius:6px;cursor:pointer}
+
+/* PAGINAÇÃO */
+.pagination{display:flex;justify-content:center;margin-top:20px;gap:10px}
+.page-btn{padding:8px 12px;border:none;background:#ddd;border-radius:6px;cursor:pointer}
+.page-btn.active{background:#9562b8;color:#fff}
+
+@media(max-width:800px){
+.container{grid-template-columns:1fr}
+.sidebar{order: 2}
+.jobs-container{order: 1}
+}
+
+@media(max-width:500px){
+nav{flex-direction:column;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<nav>
+<div class="nav-left">Flashwork</div>
+<div class="nav-links">
+<a href="index.html">Início</a>
+</div>
+</nav>
+
+<div class="container">
+
+<!-- FILTROS -->
+<div class="sidebar">
+<h3>Filtros</h3>
+
+<div class="filter">
+<label>Busca</label>
+<input type="text" id="search" placeholder="Digite a vaga">
+</div>
+
+<div class="filter">
+<label>Área</label>
+<select id="area">
+<option value="">Todas</option>
+<option>TI</option>
+<option>Serviços Gerais</option>
+<option>Design</option>
+<option>Administrativo</option>
+<option>Marketing</option>
+<option>Outros</option>
+</select>
+</div>
+
+<div class="filter">
+<label>Tipo</label>
+<select id="tipo">
+<option value="">Todos</option>
+<option>CLT</option>
+<option>Candidato</option>
+</select>
+</div>
+
+<button class="btn" onclick="filtrar()">Aplicar</button>
+</div>
+
+<!-- LISTA DE VAGAS -->
+<div class="jobs-container">
+<div class="jobs" id="jobs"></div>
+
+<div class="pagination" id="pagination"></div>
+</div>
+
+</div>
+
+<script>
+// ========================================================
+// EDITE SUAS VAGAS AQUI EMBAIXO
+// ========================================================
+let todasVagas = [
+  {
+    titulo: "AUXILIAR DE ATENDIMENTO",
+    empresa: "Seconci-Sp",
+    area: "Administrativo",
+    tipo: "CLT",
+    link_vaga: "https://seconci-sp.gupy.io/job/eyJqb2JJZCI6MTE0NTkxNjIsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal"
+  },
+  {
+    titulo: "Coordenador de Lojas Próprias",
+    empresa: "Cacau Show",
+    area: "Outros",
+    tipo: "CLT",
+    link_vaga: "https://cacaushow.gupy.io/job/eyJqb2JJZCI6MTE0NjYxNzMsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal"
+  },
+  {
+    titulo: "ADM. BANCO DE DADOS JR",
+    empresa: "Spread Tecnologia",
+    area: "TI",
+    tipo: "CLT",
+    link_vaga: "https://spread.gupy.io/job/eyJqb2JJZCI6MTE0NjEwNDIsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal"
+  },
+  {
+    titulo: "Auxiliar de Limpeza",
+    empresa: "Adcard",
+    area: "Serviços Gerais",
+    tipo: "CLT",
+    link_vaga: "https://adcard.gupy.io/job/eyJqb2JJZCI6MTE0NjYyMDAsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal"
+  },
+  {
+    titulo: "Operador(a) de Loja Pleno",
+    empresa: "Assaí",
+    area: "Outros",
+    tipo: "CLT",
+    link_vaga: "https://assai.gupy.io/job/eyJqb2JJZCI6MTE0NjI2NzksInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal"
+  }
+];
+// As vagas foram adicionadas conforme solicitado.
+// ========================================================
+
+let vagasFiltradas = [...todasVagas];
+
+let pagina = 1;
+const porPagina = 5;
+
+function carregarVagas() {
+    // Agora as vagas são carregadas diretamente do array acima
+    render();
+}
+
+function render(){
+ const lista = document.getElementById('jobs');
+ lista.innerHTML='';
+
+ if(vagasFiltradas.length === 0){
+  lista.innerHTML = '<p style="text-align:center; padding:20px;">Nenhuma vaga encontrada.</p>';
+  document.getElementById('pagination').innerHTML='';
+  return;
+ }
+
+ const inicio = (pagina-1)*porPagina;
+ const fim = inicio + porPagina;
+
+ vagasFiltradas.slice(inicio,fim).forEach(vaga=>{
+  lista.innerHTML += `
+  <div class="job-card">
+    <div class="job-title">${vaga.titulo}</div>
+    <div class="job-info">${vaga.empresa} • ${vaga.area} • ${vaga.tipo}</div>
+    <div class="job-actions">
+      <span></span>
+      <a href="${vaga.link_vaga || '#'}" target="_blank" class="btn" style="text-decoration:none;">Ver vaga</a>
+    </div>
+  </div>`;
+ });
+
+ renderPagination();
+}
+
+function renderPagination(){
+ const total = Math.ceil(vagasFiltradas.length/porPagina);
+ const pag = document.getElementById('pagination');
+ pag.innerHTML='';
+
+ for(let i=1;i<=total;i++){
+  pag.innerHTML += `<button class="page-btn ${i===pagina?'active':''}" onclick="mudarPagina(${i})">${i}</button>`
+ }
+}
+
+function mudarPagina(p){
+ pagina = p;
+ render();
+}
+
+function filtrar(){
+ const busca = document.getElementById('search').value.toLowerCase();
+ const area = document.getElementById('area').value;
+ const tipo = document.getElementById('tipo').value;
+
+ vagasFiltradas = todasVagas.filter(v=>{
+  return (
+   v.titulo.toLowerCase().includes(busca) &&
+   (!area || v.area===area) &&
+   (!tipo || v.tipo===tipo)
+  )
+ });
+ pagina = 1; // Volta para a primeira página ao filtrar
+ render();
+}
+
+carregarVagas();
+
+</script>
+
+</body>
+</html>

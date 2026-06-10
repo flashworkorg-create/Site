@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flashwork Empresas</title>
+<style>
+body{margin:0;font-family:Arial;background:#fbf3fb;color:#333;overflow-x:hidden}
+
+/* NAV */
+nav{display:flex;justify-content:space-between;align-items:center;background:#7e4aa3;padding:12px 30px;position:sticky;top:0;z-index:1000;flex-wrap:wrap;gap:15px}
+.nav-left{color:#fff;font-weight:bold;font-size:18px}
+.nav-links{display:flex;gap:25px}
+.nav-links a{color:#fff;text-decoration:none;position:relative}
+.nav-links a::after{content:"";position:absolute;width:0;height:2px;bottom:-4px;left:0;background:#fff;transition:.3s}
+.nav-links a:hover::after{width:100%}
+.nav-btn{background:#fff;color:#9562b8;border:none;padding:8px 14px;border-radius:6px;cursor:pointer;transition:.3s}
+.nav-btn:hover{transform:translateY(-2px)}
+
+/* HERO */
+header{display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,#9562b8,#7e4aa3);color:#fff;padding:100px 20px;text-align:center}
+header h1{font-size:3em;margin:0}
+.hero-text p{font-size:1.2em;margin:15px 0}
+.hero-img{background:rgba(255,255,255,0.1);border-radius:20px;height:300px;display:flex;align-items:center;justify-content:center;font-size:40px}
+
+/* SECTIONS */
+section{padding:80px 20px;text-align:center}
+
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:25px;margin-top:40px}
+
+.card{background:rgba(255,255,255,0.8);backdrop-filter:blur(10px);padding:30px;border-radius:18px;box-shadow:0 10px 30px rgba(0,0,0,0.1);transition:.3s}
+.card:hover{transform:translateY(-8px) scale(1.03);box-shadow:0 15px 40px rgba(0,0,0,0.2)}
+
+/* BUTTON */
+.btn{background:#9562b8;color:#fff;border:none;padding:14px 22px;border-radius:10px;cursor:pointer;transition:.3s;box-shadow:0 5px 15px rgba(0,0,0,0.15)}
+.btn:hover{transform:translateY(-4px) scale(1.05);background:#7e4aa3}
+
+/* STATS */
+.stats{display:flex;justify-content:center;gap:40px;margin-top:40px;flex-wrap:wrap}
+.stat{font-size:1.5em}
+.stat strong{display:block;color:#9562b8;font-size:2em}
+
+/* SCROLL */
+.reveal{opacity:0;transform:translateY(40px);transition:.6s}
+.reveal.active{opacity:1;transform:translateY(0)}
+
+html{scroll-behavior:smooth}
+
+@media (max-width: 650px) {
+  nav { flex-direction: column; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<script>
+function checkReveal() {
+  document.querySelectorAll('.reveal').forEach(el=>{
+    if(el.getBoundingClientRect().top < window.innerHeight-100){
+      el.classList.add('active')
+    }
+  })
+}
+window.addEventListener('scroll', checkReveal);
+window.addEventListener('load', checkReveal);
+</script>
+
+<nav>
+<div class="nav-left">Flashwork</div>
+<div class="nav-links">
+<a href="index.html">Início</a>
+<a href="vagas.html">Vagas</a>
+<a href="paginafree.html">Candidatos</a>
+</div>
+<div>
+<button class="nav-btn" onclick="window.location.href='login.html'">Entrar</button>
+<button class="nav-btn" onclick="window.location.href='loginempresa.html'">Cadastrar</button>
+</div>
+</nav>
+
+<header class="reveal">
+<div class="hero-text">
+<h1>Contrate rápido. Resolva mais.</h1>
+<p>Encontre freelancers qualificados em minutos e acelere seus projetos.</p>
+<button class="btn" onclick="document.getElementById('como-contratar').scrollIntoView({behavior:'smooth'})">Publicar vaga</button>
+</div>
+
+</header>
+
+<section class="reveal">
+<h2>Por que usar a Flashwork?</h2>
+<div class="cards">
+<div class="card"><h3>⚡ Rápido</h3><p>Encontre profissionais em minutos.</p></div>
+<div class="card"><h3>🎯 Qualificado</h3><p>Escolha freelancers ideais para seu projeto.</p></div>
+<div class="card"><h3>💰 Econômico</h3><p>Contrate sob demanda e reduza custos.</p></div>
+</div>
+
+<div class="stats">
+<div class="stat"><strong>+500</strong> vagas publicadas</div>
+<div class="stat"><strong>+300</strong> freelancers</div>
+<div class="stat"><strong>24h</strong> resposta média</div>
+</div>
+</section>
+
+<section id="como-contratar" class="reveal">
+<h2>Como contratar</h2>
+<div class="cards">
+<div class="card"><h3>1. Publique</h3><p>Descreva sua necessidade.</p></div>
+<div class="card"><h3>2. Receba propostas</h3><p>Freelancers entram em contato.</p></div>
+<div class="card"><h3>3. Escolha</h3><p>Selecione o melhor profissional.</p></div>
+</div>
+</section>
+
+<section class="reveal" style="background:linear-gradient(135deg,#9562b8,#7e4aa3); color:white; border-radius:30px; margin:40px 20px; padding:60px 20px;">
+  <h2 style="font-size:2.2em; margin-bottom:10px;">Pronto para contratar mais rápido?</h2>
+  <p style="font-size:1.2em; opacity:0.9;">Publique sua vaga em segundos e receba propostas de freelancers qualificados.</p>
+
+  <div style="margin-top:30px; display:flex; gap:15px; justify-content:center; flex-wrap:wrap;">
+    <button class="btn" style="background:white; color:#9562b8; font-weight:bold;" onclick="window.location.href='loginempresa.html';">Criar conta empresa</button>
+    <button class="btn" style="background:transparent; border:2px solid white;">Saiba mais</button>
+  </div>
+
+  <div style="margin-top:30px; font-size:0.9em; opacity:0.8;">
+    ✔ Sem burocracia &nbsp; ✔ Rápido &nbsp; ✔ Seguro
+  </div>
+</section>
+
+</body>
+</html>

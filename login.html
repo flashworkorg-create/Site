@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login - Flashwork</title>
+<style>
+body{margin:0;font-family:Arial;background:#f7f4fa;color:#333;display:flex;justify-content:center;align-items:center;min-height:100vh}
+.login-container{max-width:400px;width:90%;padding:40px;background:#fff;border-radius:12px;box-shadow:0 5px 15px rgba(0,0,0,0.08);text-align:center}
+h2{color:#9562b8;margin-bottom:25px}
+.form-group{margin-bottom:20px;text-align:left}
+label{display:block;margin-bottom:8px;font-size:14px;font-weight:bold}
+input{width:100%;padding:12px;border:1px solid #ddd;border-radius:6px;box-sizing:border-box;font-size:16px}
+.btn{width:100%;background:#9562b8;color:#fff;border:none;padding:14px;border-radius:6px;cursor:pointer;font-weight:bold;font-size:16px;margin-top:20px;transition:.3s}
+.btn:hover{background:#7e4aa3}
+.back-link{margin-top:20px;font-size:14px}
+.back-link a{color:#9562b8;text-decoration:none}
+</style>
+</head>
+<body>
+
+<div class="login-container">
+  <h2>Acessar Flashwork</h2>
+  <div class="form-group">
+    <label for="username">Usuário</label>
+    <input type="text" id="username" placeholder="Usuário">
+  </div>
+  <div class="form-group">
+    <label for="password">Senha</label>
+    <input type="password" id="password" placeholder="Senha">
+  </div>
+  <button class="btn" onclick="handleLogin()">Entrar</button>
+  <div class="back-link">
+    <a href="index.html">← Voltar para o Início</a>
+  </div>
+</div>
+
+<script>
+  function handleLogin() {
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+
+    // Credenciais de exemplo para o administrador
+    if (username === 'admin' && password === 'w0rK') {
+      sessionStorage.setItem('flashwork_admin_auth', 'true'); // Define a sessão de admin
+      window.location.href = 'admin.html'; // Redireciona para a área de admin
+    } else {
+      // Aqui você adicionaria a lógica para outros tipos de usuários (empresas, freelancers)
+      // Por enquanto, apenas um alerta para credenciais incorretas
+      alert('Usuário ou senha incorretos!');
+    }
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin - Gerenciar Vagas</title>
+<style>
+body{margin:0;font-family:Arial;background:#f7f4fa;color:#333}
+nav{background:#7e4aa3;padding:15px 30px;color:#fff;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.container{max-width:900px;margin:30px auto;padding:20px;background:#fff;border-radius:12px;box-shadow:0 5px 15px rgba(0,0,0,0.08)}
+h2{color:#9562b8}
+.form-group{margin-bottom:15px}
+label{display:block;margin-bottom:5px;font-size:14px}
+input, select, textarea{width:100%;padding:10px;border:1px solid #ddd;border-radius:6px;box-sizing:border-box}
+.btn{background:#9562b8;color:#fff;border:none;padding:10px 20px;border-radius:6px;cursor:pointer;font-weight:bold}
+.btn-danger{background:#ff4d4d}
+table{width:100%;border-collapse:collapse;margin-top:30px}
+th, td{text-align:left;padding:12px;border-bottom:1px solid #eee}
+th{background:#f9f9f9;color:#7e4aa3}
+#login-container { max-width: 400px; margin-top: 80px; }
+.table-responsive { width: 100%; overflow-x: auto; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+
+@media (max-width: 600px) {
+  .form-row { grid-template-columns: 1fr; }
+  .container { margin: 10px; padding: 15px; }
+  nav { flex-direction: column; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div><strong>Flashwork Admin</strong></div>
+  <div>
+    <a href="vagas.html" style="color:#fff;text-decoration:none;margin-right:20px">Ver Site</a>
+    <button id="btn-logout" class="btn btn-danger" style="display:none;padding:5px 10px" onclick="logout()">Sair</button>
+  </div>
+</nav>
+
+<!-- Tela de Login -->
+<div id="login-container" class="container">
+  <h2>Login Administrativo</h2>
+  <div class="form-group">
+    <label>Usuário</label>
+    <input type="text" id="user" placeholder="Dica: admin">
+  </div>
+  <div class="form-group">
+    <label>Senha</label>
+    <input type="password" id="pass" placeholder="Senha">
+  </div>
+  <button class="btn" onclick="login()">Entrar no Painel</button>
+</div>
+
+<!-- Conteúdo Protegido -->
+<div id="admin-content" style="display:none">
+<div class="container">
+  <h2>Inserir Nova Vaga</h2>
+  <div class="form-group">
+    <label>Título da Vaga</label>
+    <input type="text" id="titulo" placeholder="Ex: Designer UI/UX">
+  </div>
+  <div class="form-row">
+    <div class="form-group">
+      <label>Área</label>
+      <select id="area">
+        <option>TI</option>
+        <option>Serviços Gerais</option>
+        <option>Design</option>
+        <option>Programação</option>
+        <option>Marketing</option>
+        <option>Outros</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Tipo</label>
+      <select id="tipo">
+        <option>CLT</option>
+        <option>Candidato</option>
+      </select>
+    </div>
+  </div>
+  <div class="form-group">
+    <label>Empresa</label>
+    <input type="text" id="empresa" placeholder="Nome da sua empresa">
+  </div>
+  <div class="form-group">
+    <label>Link da Vaga (URL)</label>
+    <input type="url" id="linkVaga" placeholder="Ex: https://site.com/vaga-exemplo">
+  </div>
+  <button class="btn" onclick="adicionarVaga()">Publicar Vaga</button>
+
+  <hr style="margin:40px 0; border:0; border-top:1px solid #eee">
+
+  <h2>Vagas Ativas</h2>
+  <div class="table-responsive">
+    <table>
+      <thead>
+        <tr>
+          <th>Título</th>
+          <th>Empresa</th>
+          <th>Área</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody id="lista-vagas-admin"></tbody>
+    </table>
+  </div>
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  // 1. Configuração do Supabase
+  const SUPABASE_URL = 'https://COLE_SUA_URL_AQUI.supabase.co'; 
+  const SUPABASE_KEY = 'COLE_SUA_CHAVE_ANON_AQUI';
+  
+  let supabaseClient;
+
+  // Inicialização segura
+  try {
+    if (SUPABASE_URL.includes('SUA_URL')) {
+      console.warn('Atenção: Você precisa configurar as chaves do Supabase no código.');
+    } else {
+      supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    }
+  } catch (err) {
+    console.error('Erro crítico na inicialização do Supabase:', err);
+  }
+
+  let vagas = [];
+
+  // Sistema de Validação de Acesso
+  function login() {
+    const user = document.getElementById('user').value;
+    const pass = document.getElementById('pass').value;
+
+    // Credenciais de exemplo (admin / w0rK)
+    if(user === 'admin' && pass === 'w0rK') {
+      sessionStorage.setItem('flashwork_admin_auth', 'true');
+      checkAuth();
+    } else {
+      alert('Usuário ou senha incorretos!');
+    }
+  }
+
+  function logout() {
+    sessionStorage.removeItem('flashwork_admin_auth');
+    window.location.reload();
+  }
+
+  function checkAuth() {
+    const isLogged = sessionStorage.getItem('flashwork_admin_auth');
+    if(isLogged) {
+      document.getElementById('login-container').style.display = 'none';
+      document.getElementById('admin-content').style.display = 'block';
+      document.getElementById('btn-logout').style.display = 'inline-block';
+      renderAdmin();
+    }
+  }
+
+  async function carregarVagasAdmin() {
+    if (!supabaseClient) return;
+    
+    const { data, error } = await supabaseClient
+      .from('vagas')
+      .select('*')
+      .order('created_at', { ascending: false });
+    
+    if (error) console.error('Erro ao carregar:', error);
+    vagas = data || [];
+    renderAdmin();
+  }
+
+  async function adicionarVaga(){
+    const titulo = document.getElementById('titulo').value;
+    const area = document.getElementById('area').value;
+    const tipo = document.getElementById('tipo').value;
+    const empresa = document.getElementById('empresa').value;
+    const linkVaga = document.getElementById('linkVaga').value;
+
+    if (!supabaseClient) {
+      alert('Erro: O banco de dados não foi configurado corretamente. Verifique as chaves URL e KEY.');
+      return;
+    }
+
+    if(!titulo || !empresa){
+      alert('Preencha os campos obrigatórios!');
+      return;
+    }
+
+    try {
+      const { error } = await supabaseClient
+        .from('vagas')
+        .insert([{ titulo, area, tipo, empresa, link_vaga: linkVaga }]);
+
+      if(error) throw error;
+
+      alert('Vaga publicada com sucesso!');
+      
+      // Limpar campos
+      document.getElementById('titulo').value = '';
+      document.getElementById('empresa').value = '';
+      document.getElementById('linkVaga').value = '';
+      
+      carregarVagasAdmin();
+    } catch (err) {
+      console.error('Erro ao publicar vaga:', err);
+      alert('Erro ao salvar no banco: ' + (err.message || err.details));
+    }
+  }
+
+  async function excluirVaga(id){
+    if(confirm('Deseja excluir esta vaga?')){
+      if (!supabaseClient) {
+        alert('Erro de conexão com o banco.');
+        return;
+      }
+
+      const { error } = await supabaseClient
+        .from('vagas')
+        .delete()
+        .eq('id', id);
+    
+      if(error) alert('Erro ao excluir!');
+      else carregarVagasAdmin();
+    }
+  }
+
+  function renderAdmin(){
+    const lista = document.getElementById('lista-vagas-admin');
+    lista.innerHTML = '';
+
+    vagas.forEach(v => {
+      lista.innerHTML += `
+        <tr>
+          <td>${v.titulo}</td>
+          <td>${v.empresa}</td>
+          <td>${v.area}</td>
+          <td>
+            <button class="btn btn-danger" onclick="excluirVaga(${v.id})">Excluir</button>
+          </td>
+        </tr>
+      `;
+    });
+  }
+
+  // Inicializar
+  checkAuth();
+  if(sessionStorage.getItem('flashwork_admin_auth')) carregarVagasAdmin();
+</script>
+
+</body>
+</html>

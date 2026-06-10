@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flashwork</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #fbf3fb;
+      color: #333;
+    }
+
+    header {
+      background-color: #9562b8;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #7e4aa3;
+      padding: 10px 30px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .nav-left {
+      font-weight: bold;
+      color: white;
+      font-size: 1.2em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 25px;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      position: relative;
+      transition: 0.3s;
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      width: 0%;
+      height: 2px;
+      bottom: -4px;
+      left: 0;
+      background-color: white;
+      transition: 0.3s;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .nav-btn {
+      background: white;
+      color: #9562b8;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+
+    .nav-btn:hover {
+      background: #f3e6f8;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+
+    .nav-btn:active {
+      transform: scale(0.95);
+    }
+
+    .nav-btn:hover {
+      background: #f3e6f8;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 60px 20px;
+    }
+
+    .hero h1 {
+      color: #9562b8;
+      font-size: 2.5em;
+    }
+
+    .btn {
+      background-color: #9562b8;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin: 10px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .btn:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      background-color: #7e4aa3;
+    }
+
+    .btn:active {
+      transform: scale(0.97);
+    }
+
+    .section {
+      padding: 60px 20px;
+      text-align: center;
+    }
+
+    .section h2 {
+      font-size: 2em;
+      color: #9562b8;
+      margin-bottom: 10px;
+    }
+
+    .section-sub {
+      color: #777;
+      margin-bottom: 30px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .card {
+      background: white;
+      padding: 25px;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+      transition: 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 25px rgba(0,0,0,0.12);
+    }
+
+    .card h3 {
+      color: #9562b8;
+      margin-bottom: 10px;
+    }
+
+    .icon {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    footer {
+      background-color: #2d1b3d;
+      color: #ddd;
+      padding: 40px 20px;
+      text-align: left;
+    }
+
+    .footer-container {
+      max-width: 1200px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 30px;
+    }
+
+    .footer-col h4 {
+      color: white;
+      margin-bottom: 10px;
+    }
+
+    .footer-col p, .footer-col a {
+      font-size: 14px;
+      color: #bbb;
+      text-decoration: none;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .footer-col a:hover {
+      color: white;
+    }
+
+    .footer-bottom {
+      margin-top: 30px;
+      font-size: 13px;
+      color: #aaa;
+      text-align: center;
+    }
+  
+
+    /* Scroll animation */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.6s ease;
+    }
+
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 600px) {
+      nav {
+        flex-direction: column;
+        text-align: center;
+      }
+      .nav-links {
+        gap: 15px;
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+<script>
+  function revealOnScroll() {
+    const reveals = document.querySelectorAll('.reveal');
+    reveals.forEach(el => {
+      const windowHeight = window.innerHeight;
+      const elementTop = el.getBoundingClientRect().top;
+      const visible = 100;
+      if (elementTop < windowHeight - visible) {
+        el.classList.add('active');
+      }
+    });
+  }
+
+  window.addEventListener('scroll', revealOnScroll);
+  // Dispara a verificação assim que a página carrega para evitar tela em branco
+  window.addEventListener('load', revealOnScroll);
+</script>
+
+
+
+<nav>
+  <div class="nav-left">Flashwork</div>
+
+  <div class="nav-links">
+    <a href="index.html">Início</a>
+    <a href="vagas.html">Vagas</a>
+    <a href="paginafree.html">Candidatos</a>
+  </div>
+</nav>
+
+<section class="hero reveal">
+  <h1>Encontre trabalho ou publique oportunidades</h1>
+  <p><strong>Baixou, trampou. Conectou, ganhou.</strong></p>
+  <button class="btn" onclick="window.location.href='paginamepresa.html';">Sou Empresa</button>
+  <button class="btn" onclick="window.location.href='paginafree.html';">Sou Candidato</button>
+</section>
+
+<section class="section reveal">
+  <div style="max-width:900px; margin:auto; text-align:left;">
+
+    <h2 style="color:#9562b8; text-align:center;">Quem somos</h2>
+    <h3 style="font-size:2em; margin:15px 0; text-align:center;">Muito mais que uma plataforma</h3>
+
+    <p style="font-size:1.1em; line-height:1.6;">
+      A Flashwork nasceu para transformar a forma como empresas contratam e freelancers trabalham.
+    </p>
+    <p style="font-size:1.1em; line-height:1.6;">
+      Aqui, talentos encontram oportunidades e empresas encontram soluções de forma rápida, simples e segura.
+    </p>
+
+    <div style="display:flex; gap:20px; margin-top:30px; flex-wrap:wrap; justify-content:center;">
+      <div class="card" style="flex:1; min-width:140px; max-width:180px; text-align:center;">
+        <div class="icon">⚡</div>
+        <p><strong>Rápido</strong></p>
+      </div>
+      <div class="card" style="flex:1; min-width:140px; max-width:180px; text-align:center;">
+        <div class="icon">🔒</div>
+        <p><strong>Seguro</strong></p>
+      </div>
+      <div class="card" style="flex:1; min-width:140px; max-width:180px; text-align:center;">
+        <div class="icon">👥</div>
+        <p><strong>Acessível</strong></p>
+      </div>
+      <div class="card" style="flex:1; min-width:140px; max-width:180px; text-align:center;">
+        <div class="icon">📈</div>
+        <p><strong>Flexível</strong></p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="section reveal">
+  <h2>Como funciona</h2>
+  <p class="section-sub">Simples, rápido e direto ao ponto</p>
+
+  <div class="cards">
+    <div class="card">
+      <div class="icon">📢</div>
+      <h3>Publicação</h3>
+      <p>Empresas publicam oportunidades e freelancers encontram trabalhos.</p>
+    </div>
+
+    <div class="card">
+      <div class="icon">🔗</div>
+      <h3>Conexão</h3>
+      <p>O sistema conecta profissionais e empresas em segundos.</p>
+    </div>
+
+    <div class="card">
+      <div class="icon">🤝</div>
+      <h3>Contratação</h3>
+      <p>Escolha rápida do freelancer ideal e início imediato.</p>
+    </div>
+
+    <div class="card">
+      <div class="icon">⭐</div>
+      <h3>Avaliação</h3>
+      <p>Feedbacks reais que aumentam confiança na plataforma.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section reveal">
+  <h2>Objetivos da Flashwork</h2>
+  <p class="section-sub">Mais oportunidades, menos complicação</p>
+
+  <div class="cards">
+    <div class="card">
+      <div class="icon">⚡</div>
+      <p><strong>Conexão rápida</strong><br>Entre freelancers e empresas</p>
+    </div>
+
+    <div class="card">
+      <div class="icon">💼</div>
+      <p><strong>Mais oportunidades</strong><br>Para profissionais autônomos</p>
+    </div>
+
+    <div class="card">
+      <div class="icon">🧠</div>
+      <p><strong>Processo simples</strong><br>Contratação fácil e direta</p>
+    </div>
+
+    <div class="card">
+      <div class="icon">💸</div>
+      <p><strong>Geração de renda</strong><br>Trabalhos flexíveis e rápidos</p>
+    </div>
+
+    <div class="card">
+      <div class="icon">🔒</div>
+      <p><strong>Confiança</strong><br>Avaliações entre usuários</p>
+    </div>
+
+    <div class="card">
+      <div class="icon">🚀</div>
+      <p><strong>Agilidade total</strong><br>Contrate ou trabalhe sem burocracia</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-container">
+
+    <div class="footer-col">
+      <p style="font-size:20px; font-weight:bold; color:white;"><img src="fotos/logo.png" alt="Flashwork - Home" width="200" height="auto"></p>
+      <p>Conectando empresas e freelancers de forma rápida.</p>
+    </div>
+
+    <div class="footer-col">
+      <h4>Institucional</h4>
+      <a href="#">Quem somos</a>
+      <a href="#">Por que usar Flashwork?</a>
+      <a href="#">Trabalhe Conosco</a>
+      <a href="#">Política de Cookies</a>
+      <a href="#">Fale Conosco</a>
+    </div>
+
+    <div class="footer-col">
+      <h4>Empresas</h4>
+      <a href="#">Ajuda</a>
+      <a href="#">Blog</a>
+      <a href="#">Anunciar Vagas</a>
+      <a href="#">Buscar candidatos</a>
+      <a href="#">Aviso Legal</a>
+    </div>
+
+    <div class="footer-col">
+      <h4>Candidatos</h4>
+      <a href="#">Ajuda</a>
+      <a href="#">Blog</a>
+      <a href="#">Vagas</a>
+      <a href="#">Guia de Cargos</a>
+      <a href="#">Busca segura</a>
+    </div>
+
+    <div class="footer-col">
+      <h4>Mais</h4>
+      <a href="#">Política de Privacidade</a>
+      <a href="#">Acompanhe nossos canais</a>
+      <a href="#">Baixe nosso App</a>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    <p>© 2026 Flashwork Ltda. Todos os direitos reservados.</p>
+  </div>
+</footer>
+
+</body>
+</html>

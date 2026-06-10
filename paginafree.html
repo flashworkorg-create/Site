@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flashwork Candidatos</title>
+<style>
+body{margin:0;font-family:Arial;background:#fbf3fb;color:#333}
+
+/* NAV */
+nav{display:flex;justify-content:space-between;align-items:center;background:#7e4aa3;padding:12px 30px;position:sticky;top:0;z-index:1000;flex-wrap:wrap;gap:15px}
+.nav-left{color:#fff;font-weight:bold}
+.nav-links{display:flex;gap:20px}
+.nav-links a{color:#fff;text-decoration:none}
+.nav-btn{background:#fff;color:#9562b8;border:none;padding:8px 14px;border-radius:6px;cursor:pointer}
+
+/* HERO */
+header{background:linear-gradient(135deg,#9562b8,#7e4aa3);color:#fff;text-align:center;padding:100px 20px}
+header h1{font-size:2.8em;margin:0}
+header p{font-size:1.2em;margin:15px 0}
+
+.btn{background:#fff;color:#9562b8;border:none;padding:14px 22px;border-radius:10px;cursor:pointer;transition:.3s}
+.btn:hover{transform:translateY(-3px)}
+
+/* SECTIONS */
+section{padding:70px 20px;text-align:center}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:25px;margin-top:40px}
+
+.card{background:#fff;padding:25px;border-radius:16px;box-shadow:0 10px 25px rgba(0,0,0,0.1);transition:.3s}
+.card:hover{transform:translateY(-6px) scale(1.03)}
+
+/* STEPS */
+.steps{display:flex;flex-wrap:wrap;gap:20px;justify-content:center;margin-top:40px}
+.step{background:#fff;padding:20px;border-radius:14px;box-shadow:0 8px 20px rgba(0,0,0,0.1);width:220px}
+.step strong{color:#9562b8}
+
+/* CTA */
+.cta{background:linear-gradient(135deg,#9562b8,#7e4aa3);color:#fff;border-radius:30px;margin:40px 20px;padding:60px 20px}
+
+/* SCROLL */
+.reveal{opacity:0;transform:translateY(40px);transition:.6s}
+.reveal.active{opacity:1;transform:translateY(0)}
+
+html{scroll-behavior:smooth}
+
+@media (max-width: 600px) {
+  nav { flex-direction: column; text-align: center; }
+  header h1 { font-size: 2em; }
+  .cta h2 { font-size: 1.8em; }
+}
+</style>
+</head>
+<body>
+
+<script>
+function checkReveal() {
+  document.querySelectorAll('.reveal').forEach(el=>{
+    if(el.getBoundingClientRect().top < window.innerHeight-100){
+      el.classList.add('active')
+    }
+  })
+}
+window.addEventListener('scroll', checkReveal);
+window.addEventListener('load', checkReveal);
+</script>
+
+<nav>
+<div class="nav-left">Flashwork</div>
+<div class="nav-links">
+<a href="index.html">Início</a>
+<a href="vagas.html">Vagas</a>
+<a href="paginamepresa.html">Empresas</a>
+</div>
+<div>
+<button class="nav-btn" onclick="window.location.href='login.html'">Entrar</button>
+<button class="nav-btn" onclick="window.location.href='loginfree.html'">Cadastrar</button>
+</div>
+</nav>
+
+<header class="reveal">
+<h1>Trabalhe no seu ritmo</h1>
+<p>Encontre trabalhos rápidos e comece a ganhar hoje mesmo.</p>
+<button class="btn" onclick="document.getElementById('como-funciona').scrollIntoView()">Começar agora</button>
+</header>
+
+<section class="reveal">
+<h2>Por que ser candidato na Flashwork?</h2>
+<div class="cards">
+<div class="card"><h3>⚡ Rápido</h3><p>Encontre trabalhos em minutos.</p></div>
+<div class="card"><h3>💸 Ganhe mais</h3><p>Trabalhos flexíveis e bem pagos.</p></div>
+<div class="card"><h3>📱 Fácil</h3><p>Tudo simples e direto pelo app.</p></div>
+</div>
+</section>
+
+<section id="como-funciona" class="reveal">
+<h2>Como funciona</h2>
+<div class="steps">
+<div class="step"><strong>1.</strong><p>Crie sua conta</p></div>
+<div class="step"><strong>2.</strong><p>Escolha um trabalho</p></div>
+<div class="step"><strong>3.</strong><p>Execute o serviço</p></div>
+<div class="step"><strong>4.</strong><p>Receba e seja avaliado</p></div>
+</div>
+</section>
+
+<section class="cta reveal">
+<h2>Pronto para começar?</h2>
+<p>Cadastre-se e comece a trabalhar agora.</p>
+<button class="btn" onclick="window.location.href='loginfree.html';">Criar conta candidato</button>
+</section>
+
+</body>
+</html>
