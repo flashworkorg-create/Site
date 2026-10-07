@@ -122,6 +122,22 @@ input[type="file"] {
 .btn-enviar:hover, .btn-enviar:focus {
   background: #522c70;
 }
+
+/* CAIXA DE SUCESSO APÓS ENVIAR */
+.mensagem-sucesso {
+  display: none;
+  background: #e8f8f0;
+  border: 2px solid #27ae60;
+  color: #1e7e44;
+  padding: 25px;
+  border-radius: 12px;
+  text-align: center;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+.mensagem-sucesso button {
+  margin-top: 20px;
+}
 </style>
 </head>
 <body>
@@ -140,7 +156,17 @@ input[type="file"] {
     Candidatando-se para: <span id="nome-vaga">Vaga Geral</span>
   </div>
 
-  <form onsubmit="event.preventDefault(); enviarCandidatura();">
+  <!-- CAIXA DE CONFIRMAÇÃO DE ENVIO DE CURRÍCULO -->
+  <div id="box-sucesso" class="mensagem-sucesso" role="alert" aria-live="polite">
+    ✅ Currículo enviado com sucesso!
+    <p style="font-size: 15px; font-weight: normal; margin-top: 10px; color: #333;">
+      A equipe de recrutamento analisará suas informações e entrará em contato em breve.
+    </p>
+    <button class="btn-enviar" style="width: auto; padding: 10px 20px;" onclick="window.location.href='vagas.html'">Voltar para a Lista de Vagas</button>
+  </div>
+
+  <!-- FORMULÁRIO -->
+  <form id="form-candidatura" onsubmit="event.preventDefault(); enviarCandidatura();">
     <div class="form-group">
       <label for="nome">Nome Completo *</label>
       <input type="text" id="nome" required placeholder="Digite seu nome completo">
@@ -206,7 +232,6 @@ input[type="file"] {
   }
 
   function enviarCandidatura() {
-    const nome = document.getElementById('nome').value;
     const curriculo = document.getElementById('curriculo').files[0];
 
     if (!curriculo) {
@@ -214,8 +239,10 @@ input[type="file"] {
       return;
     }
 
-    alert(`Obrigado, ${nome}! Sua candidatura para "${document.getElementById('nome-vaga').innerText}" foi enviada com sucesso!`);
-    window.location.href = 'vagas.html';
+    // Oculta o formulário e exibe a mensagem de sucesso
+    document.getElementById('form-candidatura').style.display = 'none';
+    document.getElementById('vaga-titulo-display').style.display = 'none';
+    document.getElementById('box-sucesso').style.display = 'block';
   }
 </script>
 
