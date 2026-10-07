@@ -5,36 +5,189 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Flashwork - Conectando Freelancers e Empresas</title>
   <style>
-    *:focus-visible { outline: 3px solid #f39c12 !important; outline-offset: 3px; }
-    .skip-link { position: absolute; top: -50px; left: 10px; background: #6a3a8e; color: #fff; padding: 10px 15px; z-index: 10000; border-radius: 6px; text-decoration: none; font-weight: bold; transition: top 0.2s; }
-    .skip-link:focus { top: 10px; }
-    body { margin: 0; font-family: Arial, sans-serif; background-color: #fbf3fb; color: #222; line-height: 1.5; }
-    nav { display: flex; justify-content: space-between; align-items: center; background: #6a3a8e; padding: 12px 30px; position: sticky; top: 0; z-index: 1000; }
-    .nav-left { font-weight: bold; color: white; font-size: 1.2em; }
-    .nav-links { display: flex; gap: 25px; }
-    .nav-links a { color: white; text-decoration: none; font-weight: 500; }
-    .nav-links a:hover, .nav-links a:focus { text-decoration: underline; }
-    .hero { text-align: center; padding: 60px 20px; }
-    .hero h1 { color: #6a3a8e; font-size: 2.5em; }
-    .btn { background-color: #6a3a8e; color: white; padding: 12px 22px; border: none; border-radius: 8px; cursor: pointer; margin: 10px; font-weight: bold; text-decoration: none; display: inline-block; }
-    .btn:hover, .btn:focus { background-color: #522c70; }
-    .section { padding: 60px 20px; text-align: center; }
-    .section h2 { font-size: 2em; color: #6a3a8e; margin-bottom: 10px; }
-    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 20px; }
-    .card { background: white; padding: 25px; border-radius: 16px; box-shadow: 0 8px 20px rgba(0,0,0,0.08); text-align: center; }
-    .icon { font-size: 32px; margin-bottom: 10px; }
-    footer { background-color: #2d1b3d; color: #eee; padding: 40px 20px; }
-    .footer-container { max-width: 1200px; margin: auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; }
-    .footer-col h3 { color: white; font-size: 1.1em; margin-bottom: 10px; }
-    .footer-col a { color: #ddd; text-decoration: none; display: block; margin-bottom: 6px; }
-    .footer-col a:hover, .footer-col a:focus { text-decoration: underline; color: white; }
-    .footer-bottom { margin-top: 30px; font-size: 13px; color: #ccc; text-align: center; }
+    /* Acessibilidade: Destaque visual de foco para navegação por teclado */
+    *:focus-visible { 
+      outline: 3px solid #f39c12 !important; 
+      outline-offset: 3px; 
+    }
+
+    /* Link de atalho para saltar o menu direto para o conteúdo */
+    .skip-link { 
+      position: absolute; 
+      top: -50px; 
+      left: 10px; 
+      background: #6a3a8e; 
+      color: #ffffff; 
+      padding: 10px 15px; 
+      z-index: 10000; 
+      border-radius: 6px; 
+      text-decoration: none; 
+      font-weight: bold; 
+      transition: top 0.2s; 
+    }
+    .skip-link:focus { 
+      top: 10px; 
+    }
+
+    body { 
+      margin: 0; 
+      font-family: Arial, sans-serif; 
+      background-color: #fbf3fb; 
+      color: #222222; 
+      line-height: 1.5; 
+    }
+
+    /* Menu de Navegação */
+    nav { 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      background: #6a3a8e; 
+      padding: 12px 30px; 
+      position: sticky; 
+      top: 0; 
+      z-index: 1000; 
+    }
+    .nav-left { 
+      font-weight: bold; 
+      color: #ffffff; 
+      font-size: 1.2em; 
+    }
+    .nav-links { 
+      display: flex; 
+      gap: 25px; 
+    }
+    .nav-links a { 
+      color: #ffffff; 
+      text-decoration: none; 
+      font-weight: 500; 
+    }
+    .nav-links a:hover, .nav-links a:focus { 
+      text-decoration: underline; 
+    }
+
+    /* Secção Principal / Hero */
+    .hero { 
+      text-align: center; 
+      padding: 60px 20px; 
+    }
+    .hero h1 { 
+      color: #6a3a8e; 
+      font-size: 2.5em; 
+    }
+    .btn { 
+      background-color: #6a3a8e; 
+      color: #ffffff; 
+      padding: 12px 22px; 
+      border: none; 
+      border-radius: 8px; 
+      cursor: pointer; 
+      margin: 10px; 
+      font-weight: bold; 
+      text-decoration: none; 
+      display: inline-block; 
+      transition: background 0.2s, transform 0.2s;
+    }
+    .btn:hover, .btn:focus { 
+      background-color: #522c70; 
+      transform: translateY(-2px);
+    }
+
+    /* Secções e Cartões */
+    .section { 
+      padding: 50px 20px; 
+      text-align: center; 
+    }
+    .section h2 { 
+      font-size: 2em; 
+      color: #6a3a8e; 
+      margin-bottom: 10px; 
+    }
+    .cards { 
+      display: grid; 
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+      gap: 20px; 
+      margin-top: 20px; 
+    }
+    .card { 
+      background: #ffffff; 
+      padding: 25px; 
+      border-radius: 16px; 
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08); 
+      text-align: center; 
+    }
+    .icon { 
+      font-size: 32px; 
+      margin-bottom: 10px; 
+    }
+
+    /* Bloco Redes Sociais */
+    .social-banner {
+      background: #ffffff;
+      border-radius: 16px;
+      margin: 40px auto;
+      max-width: 900px;
+      padding: 40px 20px;
+      text-align: center;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    }
+    .social-btn-insta {
+      background-color: #c13584;
+      color: #ffffff !important;
+    }
+    .social-btn-insta:hover, .social-btn-insta:focus {
+      background-color: #833ab4;
+    }
+    .social-btn-tiktok {
+      background-color: #000000;
+      color: #ffffff !important;
+    }
+    .social-btn-tiktok:hover, .social-btn-tiktok:focus {
+      background-color: #25d366;
+    }
+
+    /* Rodapé */
+    footer { 
+      background-color: #2d1b3d; 
+      color: #eeeeee; 
+      padding: 40px 20px; 
+    }
+    .footer-container { 
+      max-width: 1200px; 
+      margin: auto; 
+      display: grid; 
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+      gap: 30px; 
+    }
+    .footer-col h3 { 
+      color: #ffffff; 
+      font-size: 1.1em; 
+      margin-bottom: 10px; 
+    }
+    .footer-col a { 
+      color: #dddddd; 
+      text-decoration: none; 
+      display: block; 
+      margin-bottom: 8px; 
+    }
+    .footer-col a:hover, .footer-col a:focus { 
+      text-decoration: underline; 
+      color: #ffffff; 
+    }
+    .footer-bottom { 
+      margin-top: 30px; 
+      font-size: 13px; 
+      color: #cccccc; 
+      text-align: center; 
+    }
   </style>
 </head>
 <body>
 
+<!-- Atalho de acessibilidade -->
 <a href="#conteudo-principal" class="skip-link">Pular para o conteúdo principal</a>
 
+<!-- Menu de Navegação -->
 <nav aria-label="Navegação Principal">
   <div class="nav-left">Flashwork</div>
   <div class="nav-links">
@@ -45,20 +198,21 @@
   </div>
 </nav>
 
+<!-- Conteúdo Principal -->
 <main id="conteudo-principal" tabindex="-1">
 
   <section class="hero">
     <h1>Encontre trabalho ou publique oportunidades</h1>
     <p><strong>Baixou, trampou. Conectou, ganhou.</strong></p>
-    <a href="paginamepresa.html" class="btn">Sou Empresa</a>
-    <a href="paginafree.html" class="btn">Sou Freelancer</a>
+    <a href="paginamepresa.html" class="btn" aria-label="Acessar área para empresas contratantes">Sou Empresa</a>
+    <a href="paginafree.html" class="btn" aria-label="Acessar área para trabalhadores freelancers">Sou Freelancer</a>
   </section>
 
   <section class="section">
     <div style="max-width:900px; margin:auto; text-align:left;">
       <h2 style="text-align:center;">Quem somos</h2>
       <p style="font-size:1.1em; text-align:center;">
-        A Flashwork nasceu para transformar a forma como empresas contratam e freelancers trabalham, com acessibilidade e agilidade para todos.
+        A Flashwork nasceu para transformar a forma como empresas contratam e freelancers trabalham, oferecendo acessibilidade e agilidade para todos.
       </p>
 
       <div class="cards">
@@ -75,7 +229,7 @@
         <article class="card">
           <div class="icon" aria-hidden="true">♿</div>
           <h3>Acessível</h3>
-          <p>Plataforma adaptada para todos os perfis.</p>
+          <p>Plataforma adaptada para Pessoas com Deficiência (PcD).</p>
         </article>
         <article class="card">
           <div class="icon" aria-hidden="true">📈</div>
@@ -86,38 +240,33 @@
     </div>
   </section>
 
+  <!-- DIVULGAÇÃO DAS REDES SOCIAIS -->
+  <section class="social-banner" aria-labelledby="titulo-redes">
+    <h2 id="titulo-redes" style="color: #6a3a8e; margin-top: 0;">Siga a Flashwork nas Redes Sociais</h2>
+    <p style="font-size: 1.1em; color: #444444; margin-bottom: 25px;">
+      Acompanhe as melhores vagas, dicas de carreira e conteúdos exclusivos em tempo real!
+    </p>
+
+    <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+      <a href="https://www.instagram.com/flashwork_br" target="_blank" rel="noopener noreferrer" class="btn social-btn-insta" aria-label="Siga o perfil da Flashwork no Instagram (abre em nova página)">
+        📷 Siga no Instagram
+      </a>
+      <a href="https://www.tiktok.com/@flash.work2" target="_blank" rel="noopener noreferrer" class="btn social-btn-tiktok" aria-label="Siga o perfil da Flashwork no TikTok (abre em nova página)">
+        🎵 Siga no TikTok
+      </a>
+    </div>
+  </section>
+
 </main>
 
+<!-- Rodapé do Site -->
 <footer>
   <div class="footer-container">
     <div class="footer-col">
       <h3>Flashwork</h3>
       <p>Conectando empresas e freelancers de forma rápida e inclusiva.</p>
     </div>
+
     <div class="footer-col">
       <h3>Institucional</h3>
       <a href="#">Quem somos</a>
-      <a href="#">Política de Acessibilidade</a>
-      <a href="#">Fale Conosco</a>
-    </div>
-    <div class="footer-col">
-      <h3>Acesso Rápido</h3>
-      <a href="vagas.html">Buscar Vagas</a>
-      <a href="loginfree.html">Cadastro Freelancer</a>
-      <a href="loginempresa.html">Cadastro Empresa</a>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <p>© 2026 Flashwork Ltda. Todos os direitos reservados.</p>
-  </div>
-</footer>
-
-<div vw class="enabled">
-  <div vw-access-button class="active"></div>
-  <div vw-plugin-wrapper><div class="vw-plugin-top-wrapper"></div></div>
-</div>
-<script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
-<script>new window.VLibras.Widget('https://vlibras.gov.br/app');</script>
-
-</body>
-</html>
