@@ -3,53 +3,123 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login - Flashwork</title>
+<title>Criar Conta Freelancer - Flashwork</title>
 <style>
-body{margin:0;font-family:Arial;background:#f7f4fa;color:#333;display:flex;justify-content:center;align-items:center;min-height:100vh}
-.login-container{max-width:400px;width:90%;padding:40px;background:#fff;border-radius:12px;box-shadow:0 5px 15px rgba(0,0,0,0.08);text-align:center}
-h2{color:#9562b8;margin-bottom:25px}
-.form-group{margin-bottom:20px;text-align:left}
-label{display:block;margin-bottom:8px;font-size:14px;font-weight:bold}
-input{width:100%;padding:12px;border:1px solid #ddd;border-radius:6px;box-sizing:border-box;font-size:16px}
-.btn{width:100%;background:#9562b8;color:#fff;border:none;padding:14px;border-radius:6px;cursor:pointer;font-weight:bold;font-size:16px;margin-top:20px;transition:.3s}
-.btn:hover{background:#7e4aa3}
-.back-link{margin-top:20px;font-size:14px}
-.back-link a{color:#9562b8;text-decoration:none}
+*:focus-visible { outline: 3px solid #f39c12 !important; outline-offset: 3px; }
+.skip-link { position: absolute; top: -50px; left: 10px; background: #6a3a8e; color: #fff; padding: 10px 15px; z-index: 10000; border-radius: 6px; text-decoration: none; font-weight: bold; }
+.skip-link:focus { top: 10px; }
+body{margin:0;font-family:Arial,sans-serif;background:#fbf3fb;color:#222;line-height:1.5}
+nav{display:flex;justify-content:space-between;align-items:center;background:#6a3a8e;padding:12px 30px}
+.nav-left{color:#fff;font-weight:bold}
+.nav-btn{background:#fff;color:#6a3a8e;border:none;padding:8px 14px;border-radius:6px;cursor:pointer;font-weight:bold}
+.container{display:grid;grid-template-columns:1fr 1fr;min-height:90vh}
+.left{background:linear-gradient(135deg,#6a3a8e,#522c70);color:#fff;display:flex;flex-direction:column;justify-content:center;padding:60px}
+.right{display:flex;align-items:center;justify-content:center;padding:20px}
+.form-box{background:#fff;padding:40px;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,0.1);width:100%;max-width:520px}
+.form-step{display:none}
+.form-step.active{display:block}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.full{grid-column:1/3}
+label{font-size:14px;font-weight:bold;color:#444;display:block;margin-top:10px}
+input, select, textarea{width:100%;padding:12px;border:1px solid #767676;border-radius:8px;margin-top:5px;box-sizing:border-box}
+.btn{width:100%;background:#6a3a8e;color:#fff;border:none;padding:14px;border-radius:10px;cursor:pointer;margin-top:20px;font-weight:bold;font-size:16px}
+.btn:hover, .btn:focus{background:#522c70}
+@media(max-width:800px){.container{grid-template-columns:1fr}.left{display:none}}
 </style>
 </head>
 <body>
 
-<div class="login-container">
-  <h2>Acessar Flashwork</h2>
-  <div class="form-group">
-    <label for="username">Usuário</label>
-    <input type="text" id="username" placeholder="Usuário">
+<a href="#conteudo-principal" class="skip-link">Pular para o formulário</a>
+
+<nav aria-label="Navegação Principal">
+  <div class="nav-left">Flashwork</div>
+  <button class="nav-btn" onclick="history.back()" aria-label="Voltar para a página anterior">← Voltar</button>
+</nav>
+
+<main id="conteudo-principal" class="container" tabindex="-1">
+  <div class="left">
+    <h1>Comece a ganhar hoje</h1>
+    <p>Crie seu perfil acessível e encontre trabalhos rapidamente.</p>
   </div>
-  <div class="form-group">
-    <label for="password">Senha</label>
-    <input type="password" id="password" placeholder="Senha">
+
+  <div class="right">
+    <div class="form-box">
+      <h2>Crie seu perfil Freelancer</h2>
+
+      <!-- ETAPA 1 -->
+      <form id="step1" class="form-step active" onsubmit="event.preventDefault(); nextStep();">
+        <div class="form-grid">
+          <div class="full">
+            <label for="email">E-mail</label>
+            <input id="email" type="email" required placeholder="seuemail@exemplo.com">
+          </div>
+          <div>
+            <label for="nome">Nome</label>
+            <input id="nome" type="text" required>
+          </div>
+          <div>
+            <label for="sobrenome">Sobrenome</label>
+            <input id="sobrenome" type="text" required>
+          </div>
+          <div class="full">
+            <label for="celular">Celular (somente números)</label>
+            <input id="celular" type="tel" required pattern="[0-9]+" placeholder="11999999999">
+          </div>
+        </div>
+        <button type="submit" class="btn">Continuar</button>
+      </form>
+
+      <!-- ETAPA 2 -->
+      <form id="step2" class="form-step" onsubmit="event.preventDefault(); criarConta();">
+        <div class="form-grid">
+          <div class="full">
+            <label for="area">Área Principal</label>
+            <select id="area" required>
+              <option value="">Selecione uma área</option>
+              <option>Design</option>
+              <option>Programação / TI</option>
+              <option>Marketing</option>
+              <option>Atendimento / Administrativo</option>
+            </select>
+          </div>
+          <div class="full">
+            <label for="descricao">Sobre você / Experiência</label>
+            <textarea id="descricao" rows="4" required></textarea>
+          </div>
+          <div class="full">
+            <label for="senha">Senha</label>
+            <input id="senha" type="password" required minlength="6">
+          </div>
+        </div>
+        <button type="submit" class="btn">Concluir Cadastro</button>
+      </form>
+
+    </div>
   </div>
-  <button class="btn" onclick="handleLogin()">Entrar</button>
-  <div class="back-link">
-    <a href="index.html">← Voltar para o Início</a>
-  </div>
+</main>
+
+<div vw class="enabled">
+  <div vw-access-button class="active"></div>
+  <div vw-plugin-wrapper><div class="vw-plugin-top-wrapper"></div></div>
 </div>
+<script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+<script>new window.VLibras.Widget('https://vlibras.gov.br/app');</script>
 
 <script>
-  function handleLogin() {
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
+function nextStep(){
+  document.getElementById('step1').classList.remove('active');
+  document.getElementById('step2').classList.add('active');
+}
 
-    // Credenciais de exemplo para o administrador
-    if (username === 'admin' && password === 'w0rK') {
-      sessionStorage.setItem('flashwork_admin_auth', 'true'); // Define a sessão de admin
-      window.location.href = 'admin.html'; // Redireciona para a área de admin
-    } else {
-      // Aqui você adicionaria a lógica para outros tipos de usuários (empresas, freelancers)
-      // Por enquanto, apenas um alerta para credenciais incorretas
-      alert('Usuário ou senha incorretos!');
-    }
+function criarConta(){
+  const celular = document.getElementById('celular').value;
+  if(!/^\d+$/.test(celular)){
+    alert('O celular deve conter apenas números!');
+    return;
   }
+  alert('Conta criada com sucesso!');
+  window.location.href='index.html';
+}
 </script>
 
 </body>
