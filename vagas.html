@@ -7,7 +7,7 @@
 <style>
 body{margin:0;font-family:Arial;background:#f7f4fa;color:#333}
 
-nav{display:flex;justify-content:space-between;align-items:center;background:#7e4aa3;padding:12px 30px;flex-wrap:wrap;gap:15px}
+nav{display:flex;justify-content:space-between;align-items:center;background:#7e4aa3;padding:12px 30px}
 .nav-left{color:#fff;font-weight:bold}
 .nav-links{display:flex;gap:20px}
 .nav-links a{color:#fff;text-decoration:none}
@@ -36,12 +36,6 @@ nav{display:flex;justify-content:space-between;align-items:center;background:#7e
 
 @media(max-width:800px){
 .container{grid-template-columns:1fr}
-.sidebar{order: 2}
-.jobs-container{order: 1}
-}
-
-@media(max-width:500px){
-nav{flex-direction:column;text-align:center}
 }
 </style>
 </head>
@@ -83,7 +77,7 @@ nav{flex-direction:column;text-align:center}
 <select id="tipo">
 <option value="">Todos</option>
 <option>CLT</option>
-<option>Candidato</option>
+<option>Freelancer</option>
 </select>
 </div>
 
@@ -91,7 +85,7 @@ nav{flex-direction:column;text-align:center}
 </div>
 
 <!-- LISTA DE VAGAS -->
-<div class="jobs-container">
+<div>
 <div class="jobs" id="jobs"></div>
 
 <div class="pagination" id="pagination"></div>
@@ -99,122 +93,63 @@ nav{flex-direction:column;text-align:center}
 
 </div>
 
+<!-- SDK do Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-// ========================================================
-// EDITE SUAS VAGAS AQUI EMBAIXO
-// ========================================================
-let todasVagas = [
-  {
-    titulo: "AUXILIAR DE ATENDIMENTO",
-    empresa: "Seconci-Sp",
-    area: "Administrativo",
-    tipo: "CLT",
-    link_vaga: "https://seconci-sp.gupy.io/job/eyJqb2JJZCI6MTE0NTkxNjIsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal"
-  },
-  {
-    titulo: "Coordenador de Lojas Próprias",
-    empresa: "Cacau Show",
-    area: "Outros",
-    tipo: "CLT",
-    link_vaga: "https://cacaushow.gupy.io/job/eyJqb2JJZCI6MTE0NjYxNzMsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal"
-  },
-  {
-    titulo: "ADM. BANCO DE DADOS JR",
-    empresa: "Spread Tecnologia",
-    area: "TI",
-    tipo: "CLT",
-    link_vaga: "https://spread.gupy.io/job/eyJqb2JJZCI6MTE0NjEwNDIsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal"
-  },
-  {
-    titulo: "Auxiliar de Limpeza",
-    empresa: "Adcard",
-    area: "Serviços Gerais",
-    tipo: "CLT",
-    link_vaga: "https://adcard.gupy.io/job/eyJqb2JJZCI6MTE0NjYyMDAsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal"
-  },
-  {
-    titulo: "Operador(a) de Loja Pleno",
-    empresa: "Assaí",
-    area: "Outros",
-    tipo: "CLT",
-    link_vaga: "https://assai.gupy.io/job/eyJqb2JJZCI6MTE0NjI2NzksInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal"
+  // Configuração do Supabase (insira as suas credenciais aqui se desejar carregar do banco de dados)
+  const SUPABASE_URL = 'https://COLE_SUA_URL_AQUI.supabase.co'; 
+  const SUPABASE_KEY = 'COLE_SUA_CHAVE_ANON_AQUI';
+  
+  let supabaseClient;
+
+  try {
+    if (!SUPABASE_URL.includes('COLE_SUA_URL_AQUI')) {
+      supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    }
+  } catch (err) {
+    console.error('Erro na inicialização do Supabase:', err);
   }
-];
-// As vagas foram adicionadas conforme solicitado.
-// ========================================================
 
-let vagasFiltradas = [...todasVagas];
+  // Array inicial sem nenhuma vaga predefinida
+  let todasVagas = [];
+  let vagasFiltradas = [];
 
-let pagina = 1;
-const porPagina = 5;
+  let pagina = 1;
+  const porPagina = 5;
 
-function carregarVagas() {
-    // Agora as vagas são carregadas diretamente do array acima
+  async function carregarVagas() {
+    // Tenta carregar do Supabase se estiver configurado
+    if (supabaseClient) {
+      const { data, error } = await supabaseClient
+        .from('vagas')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (!error && data) {
+        todasVagas = data;
+      }
+    }
+
+    vagasFiltradas = [...todasVagas];
     render();
-}
+  }
 
-function render(){
- const lista = document.getElementById('jobs');
- lista.innerHTML='';
+  function render(){
+    const lista = document.getElementById('jobs');
+    lista.innerHTML = '';
 
- if(vagasFiltradas.length === 0){
-  lista.innerHTML = '<p style="text-align:center; padding:20px;">Nenhuma vaga encontrada.</p>';
-  document.getElementById('pagination').innerHTML='';
-  return;
- }
+    if(vagasFiltradas.length === 0){
+      lista.innerHTML = '<p style="text-align:center; padding:20px;">Nenhuma vaga encontrada.</p>';
+      document.getElementById('pagination').innerHTML = '';
+      return;
+    }
 
- const inicio = (pagina-1)*porPagina;
- const fim = inicio + porPagina;
+    const inicio = (pagina - 1) * porPagina;
+    const fim = inicio + porPagina;
 
- vagasFiltradas.slice(inicio,fim).forEach(vaga=>{
-  lista.innerHTML += `
-  <div class="job-card">
-    <div class="job-title">${vaga.titulo}</div>
-    <div class="job-info">${vaga.empresa} • ${vaga.area} • ${vaga.tipo}</div>
-    <div class="job-actions">
-      <span></span>
-      <a href="${vaga.link_vaga || '#'}" target="_blank" class="btn" style="text-decoration:none;">Ver vaga</a>
-    </div>
-  </div>`;
- });
-
- renderPagination();
-}
-
-function renderPagination(){
- const total = Math.ceil(vagasFiltradas.length/porPagina);
- const pag = document.getElementById('pagination');
- pag.innerHTML='';
-
- for(let i=1;i<=total;i++){
-  pag.innerHTML += `<button class="page-btn ${i===pagina?'active':''}" onclick="mudarPagina(${i})">${i}</button>`
- }
-}
-
-function mudarPagina(p){
- pagina = p;
- render();
-}
-
-function filtrar(){
- const busca = document.getElementById('search').value.toLowerCase();
- const area = document.getElementById('area').value;
- const tipo = document.getElementById('tipo').value;
-
- vagasFiltradas = todasVagas.filter(v=>{
-  return (
-   v.titulo.toLowerCase().includes(busca) &&
-   (!area || v.area===area) &&
-   (!tipo || v.tipo===tipo)
-  )
- });
- pagina = 1; // Volta para a primeira página ao filtrar
- render();
-}
-
-carregarVagas();
-
-</script>
-
-</body>
-</html>
+    vagasFiltradas.slice(inicio, fim).forEach(vaga => {
+      lista.innerHTML += `
+      <div class="job-card">
+        <div class="job-title">${vaga.titulo}</div>
+        <div class="job-info">${vaga.empresa} • ${vaga.area} •${vaga.tipo}</div>
+        <div class="
