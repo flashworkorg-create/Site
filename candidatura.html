@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Candidatura - Flashwork</title>
+<style>
+/* Foco visível para acessibilidade */
+*:focus-visible {
+  outline: 3px solid #f39c12 !important;
+  outline-offset: 3px;
+}
+
+.skip-link {
+  position: absolute;
+  top: -50px;
+  left: 10px;
+  background: #6a3a8e;
+  color: #ffffff;
+  padding: 10px 15px;
+  z-index: 10000;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: top 0.2s;
+}
+.skip-link:focus { top: 10px; }
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f7f4fa;
+  color: #222222;
+  line-height: 1.5;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #6a3a8e;
+  padding: 12px 30px;
+}
+.nav-left {
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 1.2em;
+}
+.nav-btn {
+  background: #ffffff;
+  color: #6a3a8e;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.container {
+  max-width: 650px;
+  margin: 30px auto;
+  padding: 30px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+}
+
+h1 {
+  color: #6a3a8e;
+  margin-top: 0;
+  font-size: 1.8em;
+}
+
+.vaga-destaque {
+  background: #fbf3fb;
+  border-left: 4px solid #6a3a8e;
+  padding: 12px 15px;
+  border-radius: 6px;
+  margin-bottom: 25px;
+  font-weight: bold;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 6px;
+  color: #444444;
+  font-size: 14px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+select,
+textarea,
+input[type="file"] {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #767676;
+  border-radius: 8px;
+  box-sizing: border-box;
+  font-size: 15px;
+}
+
+.btn-enviar {
+  width: 100%;
+  background: #6a3a8e;
+  color: #ffffff;
+  border: none;
+  padding: 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+  transition: background 0.2s;
+}
+
+.btn-enviar:hover, .btn-enviar:focus {
+  background: #522c70;
+}
+</style>
+</head>
+<body>
+
+<a href="#conteudo-principal" class="skip-link">Pular para o formulário de candidatura</a>
+
+<nav aria-label="Navegação Superior">
+  <div class="nav-left">Flashwork</div>
+  <button class="nav-btn" onclick="history.back()" aria-label="Voltar para a página de vagas">← Voltar para Vagas</button>
+</nav>
+
+<main id="conteudo-principal" class="container" tabindex="-1">
+  <h1>Enviar Currículo</h1>
+  
+  <div class="vaga-destaque" id="vaga-titulo-display">
+    Candidatando-se para: <span id="nome-vaga">Vaga Geral</span>
+  </div>
+
+  <form onsubmit="event.preventDefault(); enviarCandidatura();">
+    <div class="form-group">
+      <label for="nome">Nome Completo *</label>
+      <input type="text" id="nome" required placeholder="Digite seu nome completo">
+    </div>
+
+    <div class="form-group">
+      <label for="email">E-mail de Contato *</label>
+      <input type="email" id="email" required placeholder="seuemail@exemplo.com">
+    </div>
+
+    <div class="form-group">
+      <label for="telefone">Telefone / WhatsApp *</label>
+      <input type="tel" id="telefone" required placeholder="(11) 99999-9999">
+    </div>
+
+    <div class="form-group">
+      <label for="escolaridade">Escolaridade *</label>
+      <select id="escolaridade" required>
+        <option value="">Selecione sua escolaridade</option>
+        <option>Ensino Fundamental</option>
+        <option>Ensino Médio Incompleto</option>
+        <option>Ensino Médio Completo</option>
+        <option>Ensino Técnico</option>
+        <option>Superior Incompleto</option>
+        <option>Superior Completo</option>
+        <option>Pós-Graduação / Especialização</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="experiencia">Resumo das Experiências Anteriores *</label>
+      <textarea id="experiencia" rows="4" required placeholder="Descreva brevemente onde já trabalhou e suas principais funções..."></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="curriculo">Anexar Currículo (PDF ou DOCX) *</label>
+      <input type="file" id="curriculo" accept=".pdf, .doc, .docx" required aria-label="Upload de ficheiro do currículo">
+    </div>
+
+    <button type="submit" class="btn-enviar" aria-label="Enviar candidatura e currículo">Enviar Candidatura</button>
+  </form>
+</main>
+
+<!-- Widget VLibras -->
+<div vw class="enabled">
+  <div vw-access-button class="active"></div>
+  <div vw-plugin-wrapper>
+    <div class="vw-plugin-top-wrapper"></div>
+  </div>
+</div>
+<script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+<script>
+  new window.VLibras.Widget('https://vlibras.gov.br/app');
+</script>
+
+<script>
+  // Captura o nome da vaga enviado pela URL
+  const params = new URLSearchParams(window.location.search);
+  const vagaNome = params.get('vaga');
+
+  if (vagaNome) {
+    document.getElementById('nome-vaga').innerText = decodeURIComponent(vagaNome);
+  }
+
+  function enviarCandidatura() {
+    const nome = document.getElementById('nome').value;
+    const curriculo = document.getElementById('curriculo').files[0];
+
+    if (!curriculo) {
+      alert('Por favor, anexe o ficheiro do seu currículo.');
+      return;
+    }
+
+    alert(`Obrigado, ${nome}! Sua candidatura para "${document.getElementById('nome-vaga').innerText}" foi enviada com sucesso!`);
+    window.location.href = 'vagas.html';
+  }
+</script>
+
+</body>
+</html>
