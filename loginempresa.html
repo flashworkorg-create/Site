@@ -5,151 +5,91 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Criar Conta Empresa - Flashwork</title>
 <style>
-body{margin:0;font-family:Arial;background:#fbf3fb;color:#333}
-
-nav{display:flex;justify-content:space-between;align-items:center;background:#7e4aa3;padding:12px 30px}
+*:focus-visible { outline: 3px solid #f39c12 !important; outline-offset: 3px; }
+.skip-link { position: absolute; top: -50px; left: 10px; background: #6a3a8e; color: #fff; padding: 10px 15px; z-index: 10000; border-radius: 6px; text-decoration: none; font-weight: bold; }
+.skip-link:focus { top: 10px; }
+body{margin:0;font-family:Arial,sans-serif;background:#fbf3fb;color:#222;line-height:1.5}
+nav{display:flex;justify-content:space-between;align-items:center;background:#6a3a8e;padding:12px 30px}
 .nav-left{color:#fff;font-weight:bold}
-.nav-btn{background:#fff;color:#9562b8;border:none;padding:8px 14px;border-radius:6px;cursor:pointer}
-
-.container{display:grid;grid-template-columns:1fr 1fr;min-height:100vh}
-
-.left{background:linear-gradient(135deg,#9562b8,#7e4aa3);color:#fff;display:flex;flex-direction:column;justify-content:center;padding:60px}
-.left h1{font-size:2.5em}
-.left p{font-size:1.2em;opacity:0.9}
-
-.right{display:flex;align-items:center;justify-content:center}
-
+.nav-btn{background:#fff;color:#6a3a8e;border:none;padding:8px 14px;border-radius:6px;cursor:pointer;font-weight:bold}
+.container{display:grid;grid-template-columns:1fr 1fr;min-height:90vh}
+.left{background:linear-gradient(135deg,#6a3a8e,#522c70);color:#fff;display:flex;flex-direction:column;justify-content:center;padding:60px}
+.right{display:flex;align-items:center;justify-content:center;padding:20px}
 .form-box{background:#fff;padding:40px;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,0.1);width:100%;max-width:520px}
-.form-box h2{margin-bottom:10px;color:#9562b8}
-
-.progress{height:6px;background:#eee;border-radius:10px;margin-bottom:20px;overflow:hidden}
-.progress-bar{height:100%;width:50%;background:#9562b8}
-
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .full{grid-column:1/3}
-
-label{font-size:12px;color:#777}
-.input{width:100%;padding:12px;border:1px solid #ddd;border-radius:8px;margin-top:5px;transition:.2s}
-.input:focus{outline:none;border-color:#9562b8;box-shadow:0 0 0 2px rgba(149,98,184,0.2)}
-
-.btn{width:100%;background:#9562b8;color:#fff;border:none;padding:14px;border-radius:10px;cursor:pointer;margin-top:20px;transition:.3s}
-.btn:hover{background:#7e4aa3;transform:translateY(-2px)}
-
-.link{margin-top:15px;font-size:14px;text-align:center}
-.link a{color:#9562b8;text-decoration:none}
-
-@media(max-width:800px){
-.container{grid-template-columns:1fr}
-.left{display:none}
-.form-grid{grid-template-columns:1fr}
-.full{grid-column:1}
-}
+label{font-size:14px;font-weight:bold;color:#444;display:block;margin-top:10px}
+input{width:100%;padding:12px;border:1px solid #767676;border-radius:8px;margin-top:5px;box-sizing:border-box}
+.btn{width:100%;background:#6a3a8e;color:#fff;border:none;padding:14px;border-radius:10px;cursor:pointer;margin-top:20px;font-weight:bold;font-size:16px}
+.btn:hover, .btn:focus{background:#522c70}
+@media(max-width:800px){.container{grid-template-columns:1fr}.left{display:none}}
 </style>
 </head>
 <body>
 
-<nav>
-<div class="nav-left">Flashwork</div>
-<button class="nav-btn" onclick="history.back()">← Voltar</button>
+<a href="#conteudo-principal" class="skip-link">Pular para o formulário</a>
+
+<nav aria-label="Navegação Principal">
+  <div class="nav-left">Flashwork</div>
+  <button class="nav-btn" onclick="history.back()" aria-label="Voltar para a página anterior">← Voltar</button>
 </nav>
 
-<div class="container">
+<main id="conteudo-principal" class="container" tabindex="-1">
+  <div class="left">
+    <h1>Crie sua conta empresa</h1>
+    <p>Sem burocracia. Contrate profissionais qualificados de forma rápida.</p>
+  </div>
 
-<div class="left">
-<h1>Crie sua conta empresa</h1>
-<p>Leva menos de 2 minutos. Sem burocracia.</p>
+  <div class="right">
+    <form class="form-box" onsubmit="event.preventDefault(); criarConta();">
+      <h2>Cadastro de Empresa</h2>
+
+      <div class="form-grid">
+        <div class="full">
+          <label for="email">E-mail corporativo</label>
+          <input id="email" type="email" required>
+        </div>
+        <div>
+          <label for="nome">Nome do responsável</label>
+          <input id="nome" type="text" required>
+        </div>
+        <div>
+          <label for="empresa">Nome da Empresa</label>
+          <input id="empresa" type="text" required>
+        </div>
+        <div>
+          <label for="celular">Celular</label>
+          <input id="celular" type="tel" pattern="[0-9]+" required placeholder="Apenas números">
+        </div>
+        <div>
+          <label for="cnpj">CNPJ</label>
+          <input id="cnpj" type="text" required placeholder="Apenas números">
+        </div>
+      </div>
+
+      <button type="submit" class="btn">Criar Conta Empresa</button>
+    </form>
+  </div>
+</main>
+
+<div vw class="enabled">
+  <div vw-access-button class="active"></div>
+  <div vw-plugin-wrapper><div class="vw-plugin-top-wrapper"></div></div>
 </div>
-
-<div class="right">
-<div class="form-box">
-<h2>Cadastro</h2>
-<div class="progress"><div class="progress-bar"></div></div>
-
-<div class="form-grid" id="form">
-
-<div class="full">
-<label>Seu e-mail corporativo</label>
-<input class="input" id="email" type="email" required>
-</div>
-
-<div>
-<label>Nome</label>
-<input class="input" id="nome" type="text" required>
-</div>
-
-<div>
-<label>Sobrenome</label>
-<input class="input" id="sobrenome" type="text" required>
-</div>
-
-<div>
-<label>Celular</label>
-<input class="input" id="celular" type="text" pattern="[0-9]+" required>
-</div>
-
-<div>
-<label>Telefone fixo</label>
-<input class="input" id="telefone" type="text" pattern="[0-9]+">
-</div>
-
-<div class="full">
-<label>Cargo</label>
-<input class="input" id="cargo" type="text" required>
-</div>
-
-<div class="full">
-<label>Nome da empresa</label>
-<input class="input" id="empresa" type="text" required>
-</div>
-
-<div>
-<label>CEP</label>
-<input class="input" id="cep" type="text" pattern="[0-9]+" required>
-</div>
-
-<div>
-<label>CNPJ</label>
-<input class="input" id="cnpj" type="text" pattern="[0-9]+" required>
-</div>
-
-<div class="full">
-<label>Nº de funcionários</label>
-<input class="input" id="funcionarios" type="number" required>
-</div>
-
-</div>
-
-<button class="btn" onclick="criarConta()">Criar conta</button>
-
-<div class="link">
-Já tem conta? <a href="login.html">Entrar</a>
-</div>
-
-</div>
-</div>
-
-</div>
+<script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+<script>new window.VLibras.Widget('https://vlibras.gov.br/app');</script>
 
 <script>
 function criarConta(){
- const inputs = document.querySelectorAll('#form input');
- for(let input of inputs){
-   if(!input.checkValidity() || input.value.trim()===''){
-     alert('Preencha todos os campos corretamente!');
-     input.focus();
-     return;
-   }
- }
-
- const celular = document.getElementById('celular').value;
- if(!/^\d+$/.test(celular)){
-   alert('Celular deve conter apenas números');
-   return;
- }
-
- alert('Conta criada com sucesso!');
- window.location.href = 'index.html';
+  const celular = document.getElementById('celular').value;
+  if(!/^\d+$/.test(celular)){
+    alert('O celular deve conter apenas números!');
+    return;
+  }
+  alert('Conta empresa criada com sucesso!');
+  window.location.href = 'index.html';
 }
 </script>
+
 </body>
 </html>
