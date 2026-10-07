@@ -106,10 +106,12 @@ nav {
   cursor: pointer;
   font-weight: bold;
   color: #6a3a8e;
-  padding: 5px 0;
+  padding: 8px;
+  background: #fbf3fb;
+  border-radius: 6px;
 }
 
-/* LISTA */
+/* LISTA DE VAGAS */
 .jobs {
   display: flex;
   flex-direction: column;
@@ -132,22 +134,26 @@ nav {
   font-weight: bold;
   color: #6a3a8e;
   margin-top: 0;
+  margin-bottom: 8px;
 }
 .job-info {
   font-size: 15px;
-  margin: 10px 0;
+  margin: 8px 0;
   color: #444444;
 }
+
+/* BADGE PCD DESTACADO */
 .badge-pcd {
   display: inline-block;
   background-color: #005a9c;
   color: #ffffff;
-  padding: 4px 10px;
+  padding: 6px 12px;
   border-radius: 12px;
   font-size: 13px;
   font-weight: bold;
-  margin-top: 5px;
+  margin-top: 8px;
 }
+
 .job-actions {
   display: flex;
   justify-content: space-between;
@@ -199,7 +205,6 @@ nav {
 </head>
 <body>
 
-<!-- Atalho de acessibilidade -->
 <a href="#conteudo-principal" class="skip-link">Pular para o conteúdo principal</a>
 
 <nav aria-label="Navegação Principal">
@@ -242,10 +247,11 @@ nav {
       </select>
     </div>
 
+    <!-- CAIXA DE FILTRO PCD -->
     <div class="filter">
       <label class="filter-checkbox" for="pcdOnly">
         <input type="checkbox" id="pcdOnly">
-        <span>♿ Apenas Vagas PcD</span>
+        <span>♿ Apenas Vagas para PcD</span>
       </label>
     </div>
 
@@ -261,7 +267,7 @@ nav {
 
 </main>
 
-<!-- Widget VLibras (Acessibilidade para Surdos e Deficientes Auditivos) -->
+<!-- Widget VLibras -->
 <div vw class="enabled">
   <div vw-access-button class="active"></div>
   <div vw-plugin-wrapper>
@@ -289,23 +295,77 @@ nav {
     console.error('Erro na inicialização do Supabase:', err);
   }
 
-  // Lista de vagas inicial com suporte ao filtro e marcador PcD
+  // Lista com 10 vagas variadas (Freelancer, CLT e vagas afirmativas PcD)
   let todasVagas = [
     {
-      titulo: "Assistente Administrativo",
-      empresa: "Tech Solutions",
+      titulo: "Assistente de R&S",
+      empresa: "Hire Now®",
       area: "Administrativo",
-      tipo: "CLT",
-      pcd: true,
-      link_vaga: "#"
+      tipo: "Freelancer",
+      pcd: true
     },
     {
-      titulo: "Desenvolvedor Front-end",
-      empresa: "Flashwork Digital",
+      titulo: "Designer de Landing Pages",
+      empresa: "Agência Strategic LTDA",
+      area: "Design",
+      tipo: "Freelancer",
+      pcd: false
+    },
+    {
+      titulo: "Especialista em Suporte TI",
+      empresa: "Gi Group SpA",
+      area: "TI",
+      tipo: "CLT",
+      pcd: true
+    },
+    {
+      titulo: "Desenvolvedor Front-end React",
+      empresa: "TechVerse Soluções",
       area: "TI",
       tipo: "Freelancer",
-      pcd: false,
-      link_vaga: "#"
+      pcd: false
+    },
+    {
+      titulo: "Auxiliar Administrativo Financeiro",
+      empresa: "Grupo Inova RH",
+      area: "Administrativo",
+      tipo: "CLT",
+      pcd: true
+    },
+    {
+      titulo: "Redator de Conteúdo & Copywriter",
+      empresa: "Agência Digital Spark",
+      area: "Marketing",
+      tipo: "Freelancer",
+      pcd: false
+    },
+    {
+      titulo: "Atendente de Suporte ao Cliente",
+      empresa: "Connect Call Center",
+      area: "Outros",
+      tipo: "CLT",
+      pcd: true
+    },
+    {
+      titulo: "Designer Gráfico para Redes Sociais",
+      empresa: "Studio Criativo",
+      area: "Design",
+      tipo: "Freelancer",
+      pcd: false
+    },
+    {
+      titulo: "Analista de Marketing Digital / SEO",
+      empresa: "Growth Media",
+      area: "Marketing",
+      tipo: "CLT",
+      pcd: false
+    },
+    {
+      titulo: "Ajudante Operacional / Serviços Gerais",
+      empresa: "LogiExpress Logística",
+      area: "Serviços Gerais",
+      tipo: "CLT",
+      pcd: true
     }
   ];
   let vagasFiltradas = [];
@@ -348,4 +408,56 @@ nav {
       lista.innerHTML += `
       <article class="job-card">
         <h2 class="job-title">${vaga.titulo}</h2>
-        <div class="job-info">${vaga.empresa} • <strong>Área:</strong> ${vaga.area} • <strong>Tipo:</strong>${vaga
+        <div class="job-info">${vaga.empresa} • <strong>Área:</strong> ${vaga.area} • <strong>Tipo:</strong> ${vaga.tipo}</div>
+        ${badgePcd}
+        <div class="job-actions">
+          <span></span>
+          <a href="candidatura.html?vaga=${encodeURIComponent(vaga.titulo)}" class="btn" aria-label="Candidatar-se para a vaga ${vaga.titulo}">Enviar CV / Candidatar-se</a>
+        </div>
+      </article>`;
+    });
+
+    renderPagination();
+  }
+
+  function renderPagination(){
+    const total = Math.ceil(vagasFiltradas.length / porPagina);
+    const pag = document.getElementById('pagination');
+    pag.innerHTML = '';
+
+    if (total <= 1) return;
+
+    for(let i = 1; i <= total; i++){
+      pag.innerHTML += `<button class="page-btn ${i === pagina ? 'active' : ''}" onclick="mudarPagina(${i})" aria-label="Ir para a página ${i}">${i}</button>`;
+    }
+  }
+
+  function mudarPagina(p){
+    pagina = p;
+    render();
+  }
+
+  function filtrar(){
+    const busca = document.getElementById('search').value.toLowerCase();
+    const area = document.getElementById('area').value;
+    const tipo = document.getElementById('tipo').value;
+    const apenasPcd = document.getElementById('pcdOnly').checked;
+
+    vagasFiltradas = todasVagas.filter(v => {
+      const matchBusca = v.titulo.toLowerCase().includes(busca) || v.empresa.toLowerCase().includes(busca);
+      const matchArea = !area || v.area === area;
+      const matchTipo = !tipo || v.tipo === tipo;
+      const matchPcd = !apenasPcd || v.pcd === true;
+
+      return matchBusca && matchArea && matchTipo && matchPcd;
+    });
+
+    pagina = 1;
+    render();
+  }
+
+  carregarVagas();
+</script>
+
+</body>
+</html>
