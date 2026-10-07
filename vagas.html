@@ -288,24 +288,9 @@ nav {
   new window.VLibras.Widget('https://vlibras.gov.br/app');
 </script>
 
-<!-- SDK do Supabase -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-  const SUPABASE_URL = 'https://COLE_SUA_URL_AQUI.supabase.co'; 
-  const SUPABASE_KEY = 'COLE_SUA_CHAVE_ANON_AQUI';
-  
-  let supabaseClient;
-
-  try {
-    if (!SUPABASE_URL.includes('COLE_SUA_URL_AQUI')) {
-      supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-    }
-  } catch (err) {
-    console.error('Erro na inicialização do Supabase:', err);
-  }
-
-  // Lista com 10 vagas variadas
-  let todasVagas = [
+  // Lista fixa com as 10 vagas variadas
+  const todasVagas = [
     {
       titulo: "Assistente de R&S",
       empresa: "Hire Now®",
@@ -407,26 +392,10 @@ nav {
       pcd: true
     }
   ];
-  let vagasFiltradas = [];
 
+  let vagasFiltradas = [...todasVagas];
   let pagina = 1;
   const porPagina = 5;
-
-  async function carregarVagas() {
-    if (supabaseClient) {
-      const { data, error } = await supabaseClient
-        .from('vagas')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (!error && data && data.length > 0) {
-        todasVagas = data;
-      }
-    }
-
-    vagasFiltradas = [...todasVagas];
-    render();
-  }
 
   function render(){
     const lista = document.getElementById('jobs');
@@ -438,4 +407,72 @@ nav {
       return;
     }
 
-    const inicio = (pagina - 1) * porPag
+    const inicio = (pagina - 1) * porPagina;
+    const fim = inicio + porPagina;
+
+    vagasFiltradas.slice(inicio, fim).forEach(vaga => {
+      const badgePcd = vaga.pcd ? `<div class="badge-pcd" aria-label="Vaga afirmativa ou exclusiva para Pessoa com Deficiência">♿ Vaga para PcD</div>` : '';
+
+      lista.innerHTML += `
+      <article class="job-card">
+        <h2 class="job-title">${vaga.titulo}</h2>
+        <div class="job-info">🏢 <strong>Empresa:</strong> ${vaga.empresa} • <strong>Área:</strong> ${vaga.area} • <strong>Tipo:</strong> ${vaga.tipo}</div>
+        
+        <div class="job-details">
+          <p>💰 <strong>Salário:</strong> ${vaga.salario}</p>
+          <p>⏰ <strong>Carga Horária:</strong> ${vaga.cargaHoraria}</p>
+          <p>📝 <strong>O que vai fazer:</strong> ${vaga.descricao}</p>
+        </div>
+
+        ${badgePcd}
+        <div class="job-actions">
+          <a href="candidatura.html?vaga=${encodeURIComponent(vaga.titulo)}" class="btn" aria-label="Candidatar-se para a vaga ${vaga.titulo}">Enviar CV / Candidatar-se</a>
+        </div>
+      </article>`;
+    });
+
+    renderPagination();
+  }
+
+  function renderPagination(){
+    const total = Math.ceil(vagasFiltradas.length / porPagina);
+    const pag = document.getElementById('pagination');
+    pag.innerHTML = '';
+
+    if (total <= 1) return;
+
+    for(let i = 1; i <= total; i++){
+      pag.innerHTML += `<button class="page-btn ${i === pagina ? 'active' : ''}" onclick="mudarPagina(${i})" aria-label="Ir para a página ${i}">${i}</button>`;
+    }
+  }
+
+  function mudarPagina(p){
+    pagina = p;
+    render();
+  }
+
+  function filtrar(){
+    const busca = document.getElementById('search').value.toLowerCase();
+    const area = document.getElementById('area').value;
+    const tipo = document.getElementById('tipo').value;
+    const apenasPcd = document.getElementById('pcdOnly').checked;
+
+    vagasFiltradas = todasVagas.filter(v => {
+      const matchBusca = v.titulo.toLowerCase().includes(busca) || v.empresa.toLowerCase().includes(busca);
+      const matchArea = !area || v.area === area;
+      const matchTipo = !tipo || v.tipo === tipo;
+      const matchPcd = !apenasPcd || v.pcd === true;
+
+      return matchBusca && matchArea && matchTipo && matchPcd;
+    });
+
+    pagina = 1;
+    render();
+  }
+
+  // Renderiza imediatamente ao carregar
+  render();
+</script>
+
+</body>
+</html>
