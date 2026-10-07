@@ -277,4 +277,165 @@ nav {
 </main>
 
 <!-- Widget VLibras -->
-<div
+<div vw class="enabled">
+  <div vw-access-button class="active"></div>
+  <div vw-plugin-wrapper>
+    <div class="vw-plugin-top-wrapper"></div>
+  </div>
+</div>
+<script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+<script>
+  new window.VLibras.Widget('https://vlibras.gov.br/app');
+</script>
+
+<!-- SDK do Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const SUPABASE_URL = 'https://COLE_SUA_URL_AQUI.supabase.co'; 
+  const SUPABASE_KEY = 'COLE_SUA_CHAVE_ANON_AQUI';
+  
+  let supabaseClient;
+
+  try {
+    if (!SUPABASE_URL.includes('COLE_SUA_URL_AQUI')) {
+      supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    }
+  } catch (err) {
+    console.error('Erro na inicialização do Supabase:', err);
+  }
+
+  // Lista com 10 vagas variadas
+  let todasVagas = [
+    {
+      titulo: "Assistente de R&S",
+      empresa: "Hire Now®",
+      area: "Administrativo",
+      tipo: "Freelancer",
+      salario: "R$ 1.800,00 por projeto",
+      cargaHoraria: "20h semanais (Horário Flexível)",
+      descricao: "Triagem de currículos, agendamento de entrevistas e apoio na condução de processos seletivos.",
+      pcd: true
+    },
+    {
+      titulo: "Designer de Landing Pages",
+      empresa: "Agência Strategic LTDA",
+      area: "Design",
+      tipo: "Freelancer",
+      salario: "R$ 2.500,00 por demanda",
+      cargaHoraria: "Projeto Pontual (Prazo de 15 dias)",
+      descricao: "Criação de layouts responsivos no Figma e montagem de páginas focadas em conversão.",
+      pcd: false
+    },
+    {
+      titulo: "Especialista em Suporte TI",
+      empresa: "Gi Group SpA",
+      area: "TI",
+      tipo: "CLT",
+      salario: "R$ 3.800,00 / mês + Benefícios",
+      cargaHoraria: "44h semanais (Escala 5x2)",
+      descricao: "Atendimento a chamados técnicos, manutenção de rede local e suporte a usuários internos.",
+      pcd: true
+    },
+    {
+      titulo: "Desenvolvedor Front-end React",
+      empresa: "TechVerse Soluções",
+      area: "TI",
+      tipo: "Freelancer",
+      salario: "R$ 4.500,00 / mês",
+      cargaHoraria: "30h semanais (Remoto)",
+      descricao: "Desenvolvimento de componentes reutilizáveis e integração de APIs REST com Reactjs.",
+      pcd: false
+    },
+    {
+      titulo: "Auxiliar Administrativo Financeiro",
+      empresa: "Grupo Inova RH",
+      area: "Administrativo",
+      tipo: "CLT",
+      salario: "R$ 2.200,00 / mês",
+      cargaHoraria: "40h semanais (Segunda a Sexta)",
+      descricao: "Lançamento de contas a pagar/receber, emissão de notas fiscais e conciliação bancária.",
+      pcd: true
+    },
+    {
+      titulo: "Redator de Conteúdo & Copywriter",
+      empresa: "Agência Digital Spark",
+      area: "Marketing",
+      tipo: "Freelancer",
+      salario: "R$ 1.500,00 / pacote mensal",
+      cargaHoraria: "Flexível (Entrega quinzenal)",
+      descricao: "Produção de artigos para blog orientados a SEO e textos persuasivos para anúncios digitais.",
+      pcd: false
+    },
+    {
+      titulo: "Atendente de Suporte ao Cliente",
+      empresa: "Connect Call Center",
+      area: "Outros",
+      tipo: "CLT",
+      salario: "R$ 1.620,00 + Comissões",
+      cargaHoraria: "36h semanais (Escala 6x1)",
+      descricao: "Atendimento via chat e telefone para resolução de dúvidas e suporte operacional aos clientes.",
+      pcd: true
+    },
+    {
+      titulo: "Designer Gráfico para Redes Sociais",
+      empresa: "Studio Criativo",
+      area: "Design",
+      tipo: "Freelancer",
+      salario: "R$ 1.200,00 / pacote de artes",
+      cargaHoraria: "Flexível",
+      descricao: "Criação de identidade visual, posts para Instagram e materiais publicitários digitais.",
+      pcd: false
+    },
+    {
+      titulo: "Analista de Marketing Digital / SEO",
+      empresa: "Growth Media",
+      area: "Marketing",
+      tipo: "CLT",
+      salario: "R$ 4.000,00 / mês",
+      cargaHoraria: "40h semanais (Híbrido)",
+      descricao: "Gestão de campanhas de tráfego pago (Google/Meta Ads), auditoria SEO e análise de métricas.",
+      pcd: false
+    },
+    {
+      titulo: "Ajudante Operacional / Serviços Gerais",
+      empresa: "LogiExpress Logística",
+      area: "Serviços Gerais",
+      tipo: "CLT",
+      salario: "R$ 1.950,00 + Vale Alimentação",
+      cargaHoraria: "44h semanais",
+      descricao: "Organização do estoque, separação de mercadorias para envio e conferência de materiais.",
+      pcd: true
+    }
+  ];
+  let vagasFiltradas = [];
+
+  let pagina = 1;
+  const porPagina = 5;
+
+  async function carregarVagas() {
+    if (supabaseClient) {
+      const { data, error } = await supabaseClient
+        .from('vagas')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (!error && data && data.length > 0) {
+        todasVagas = data;
+      }
+    }
+
+    vagasFiltradas = [...todasVagas];
+    render();
+  }
+
+  function render(){
+    const lista = document.getElementById('jobs');
+    lista.innerHTML = '';
+
+    if(vagasFiltradas.length === 0){
+      lista.innerHTML = '<p style="text-align:center; padding:30px; font-size:1.1em;">Nenhuma vaga encontrada com os filtros selecionados.</p>';
+      document.getElementById('pagination').innerHTML = '';
+      return;
+    }
+
+    const inicio = (pagina - 1) * porPag
