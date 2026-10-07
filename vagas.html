@@ -3,100 +3,279 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vagas - Flashwork</title>
+<title>Vagas - Flashwork (Acessível)</title>
 <style>
-body{margin:0;font-family:Arial;background:#f7f4fa;color:#333}
+/* Destaque de foco para navegação por teclado */
+*:focus-visible {
+  outline: 3px solid #f39c12 !important;
+  outline-offset: 3px;
+}
 
-nav{display:flex;justify-content:space-between;align-items:center;background:#7e4aa3;padding:12px 30px}
-.nav-left{color:#fff;font-weight:bold}
-.nav-links{display:flex;gap:20px}
-.nav-links a{color:#fff;text-decoration:none}
+/* Link de atalho para saltar o menu */
+.skip-link {
+  position: absolute;
+  top: -50px;
+  left: 10px;
+  background: #6a3a8e;
+  color: #ffffff;
+  padding: 10px 15px;
+  z-index: 10000;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: top 0.2s;
+}
+.skip-link:focus {
+  top: 10px;
+}
 
-.container{display:grid;grid-template-columns:250px 1fr;gap:20px;padding:20px}
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f7f4fa;
+  color: #222222;
+  line-height: 1.5;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #6a3a8e;
+  padding: 12px 30px;
+}
+.nav-left {
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 1.2em;
+}
+.nav-links {
+  display: flex;
+  gap: 20px;
+}
+.nav-links a {
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 500;
+}
+.nav-links a:hover, .nav-links a:focus {
+  text-decoration: underline;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 20px;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
 
 /* FILTROS */
-.sidebar{background:#fff;padding:20px;border-radius:12px;box-shadow:0 5px 15px rgba(0,0,0,0.08)}
-.sidebar h3{margin-top:0}
-.filter{margin-bottom:15px}
-.filter input, .filter select{width:100%;padding:8px;border-radius:6px;border:1px solid #ddd}
+.sidebar {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+.sidebar h2 {
+  margin-top: 0;
+  font-size: 1.2em;
+  color: #6a3a8e;
+}
+.filter {
+  margin-bottom: 15px;
+}
+.filter label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  font-size: 14px;
+}
+.filter input[type="text"], .filter select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #767676;
+  box-sizing: border-box;
+}
+.filter-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #6a3a8e;
+  padding: 5px 0;
+}
 
 /* LISTA */
-.jobs{display:flex;flex-direction:column;gap:15px}
-.job-card{background:#fff;padding:20px;border-radius:12px;box-shadow:0 5px 15px rgba(0,0,0,0.08);transition:.3s}
-.job-card:hover{transform:translateY(-5px)}
-.job-title{font-size:18px;font-weight:bold;color:#9562b8}
-.job-info{font-size:14px;margin:8px 0;color:#666}
-.job-actions{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
-.btn{background:#9562b8;color:#fff;border:none;padding:8px 14px;border-radius:6px;cursor:pointer}
+.jobs {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.job-card {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+  transition: transform 0.2s, box-shadow 0.2s;
+  border-left: 5px solid #6a3a8e;
+}
+.job-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+}
+.job-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #6a3a8e;
+  margin-top: 0;
+}
+.job-info {
+  font-size: 15px;
+  margin: 10px 0;
+  color: #444444;
+}
+.badge-pcd {
+  display: inline-block;
+  background-color: #005a9c;
+  color: #ffffff;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: bold;
+  margin-top: 5px;
+}
+.job-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 15px;
+}
+.btn {
+  background: #6a3a8e;
+  color: #ffffff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  text-decoration: none;
+  display: inline-block;
+}
+.btn:hover, .btn:focus {
+  background: #522c70;
+}
 
 /* PAGINAÇÃO */
-.pagination{display:flex;justify-content:center;margin-top:20px;gap:10px}
-.page-btn{padding:8px 12px;border:none;background:#ddd;border-radius:6px;cursor:pointer}
-.page-btn.active{background:#9562b8;color:#fff}
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 25px;
+  gap: 10px;
+}
+.page-btn {
+  padding: 10px 15px;
+  border: 1px solid #6a3a8e;
+  background: #ffffff;
+  color: #6a3a8e;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.page-btn.active {
+  background: #6a3a8e;
+  color: #ffffff;
+}
 
-@media(max-width:800px){
-.container{grid-template-columns:1fr}
+@media(max-width: 800px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
 </head>
 <body>
 
-<nav>
-<div class="nav-left">Flashwork</div>
-<div class="nav-links">
-<a href="index.html">Início</a>
-</div>
+<!-- Atalho de acessibilidade -->
+<a href="#conteudo-principal" class="skip-link">Pular para o conteúdo principal</a>
+
+<nav aria-label="Navegação Principal">
+  <div class="nav-left">Flashwork</div>
+  <div class="nav-links">
+    <a href="index.html">Início</a>
+  </div>
 </nav>
 
-<div class="container">
+<main id="conteudo-principal" class="container" tabindex="-1">
 
-<!-- FILTROS -->
-<div class="sidebar">
-<h3>Filtros</h3>
+  <!-- FILTROS DE BUSCA -->
+  <aside class="sidebar" aria-labelledby="titulo-filtros">
+    <h2 id="titulo-filtros">Filtros de Busca</h2>
 
-<div class="filter">
-<label>Busca</label>
-<input type="text" id="search" placeholder="Digite a vaga">
+    <div class="filter">
+      <label for="search">Buscar vaga por palavra-chave</label>
+      <input type="text" id="search" placeholder="Ex: Designer, Desenvolvedor...">
+    </div>
+
+    <div class="filter">
+      <label for="area">Área de Atuação</label>
+      <select id="area">
+        <option value="">Todas as Áreas</option>
+        <option>TI</option>
+        <option>Serviços Gerais</option>
+        <option>Design</option>
+        <option>Administrativo</option>
+        <option>Marketing</option>
+        <option>Outros</option>
+      </select>
+    </div>
+
+    <div class="filter">
+      <label for="tipo">Tipo de Contrato</label>
+      <select id="tipo">
+        <option value="">Todos os Tipos</option>
+        <option>CLT</option>
+        <option>Freelancer</option>
+      </select>
+    </div>
+
+    <div class="filter">
+      <label class="filter-checkbox" for="pcdOnly">
+        <input type="checkbox" id="pcdOnly">
+        <span>♿ Apenas Vagas PcD</span>
+      </label>
+    </div>
+
+    <button class="btn" style="width:100%" onclick="filtrar()" aria-label="Aplicar os filtros selecionados">Aplicar Filtros</button>
+  </aside>
+
+  <!-- LISTA DE VAGAS -->
+  <section aria-labelledby="titulo-lista">
+    <h1 id="titulo-lista" style="font-size:1.5em; color:#6a3a8e; margin-top:0;">Vagas Disponíveis</h1>
+    <div class="jobs" id="jobs" role="region" aria-live="polite"></div>
+    <nav class="pagination" id="pagination" aria-label="Paginação de vagas"></nav>
+  </section>
+
+</main>
+
+<!-- Widget VLibras (Acessibilidade para Surdos e Deficientes Auditivos) -->
+<div vw class="enabled">
+  <div vw-access-button class="active"></div>
+  <div vw-plugin-wrapper>
+    <div class="vw-plugin-top-wrapper"></div>
+  </div>
 </div>
-
-<div class="filter">
-<label>Área</label>
-<select id="area">
-<option value="">Todas</option>
-<option>TI</option>
-<option>Serviços Gerais</option>
-<option>Design</option>
-<option>Administrativo</option>
-<option>Marketing</option>
-<option>Outros</option>
-</select>
-</div>
-
-<div class="filter">
-<label>Tipo</label>
-<select id="tipo">
-<option value="">Todos</option>
-<option>CLT</option>
-<option>Freelancer</option>
-</select>
-</div>
-
-<button class="btn" onclick="filtrar()">Aplicar</button>
-</div>
-
-<!-- LISTA DE VAGAS -->
-<div>
-<div class="jobs" id="jobs"></div>
-
-<div class="pagination" id="pagination"></div>
-</div>
-
-</div>
+<script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+<script>
+  new window.VLibras.Widget('https://vlibras.gov.br/app');
+</script>
 
 <!-- SDK do Supabase -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-  // Configuração do Supabase (insira as suas credenciais aqui se desejar carregar do banco de dados)
   const SUPABASE_URL = 'https://COLE_SUA_URL_AQUI.supabase.co'; 
   const SUPABASE_KEY = 'COLE_SUA_CHAVE_ANON_AQUI';
   
@@ -110,22 +289,38 @@ nav{display:flex;justify-content:space-between;align-items:center;background:#7e
     console.error('Erro na inicialização do Supabase:', err);
   }
 
-  // Array inicial sem nenhuma vaga predefinida
-  let todasVagas = [];
+  // Lista de vagas inicial com suporte ao filtro e marcador PcD
+  let todasVagas = [
+    {
+      titulo: "Assistente Administrativo",
+      empresa: "Tech Solutions",
+      area: "Administrativo",
+      tipo: "CLT",
+      pcd: true,
+      link_vaga: "#"
+    },
+    {
+      titulo: "Desenvolvedor Front-end",
+      empresa: "Flashwork Digital",
+      area: "TI",
+      tipo: "Freelancer",
+      pcd: false,
+      link_vaga: "#"
+    }
+  ];
   let vagasFiltradas = [];
 
   let pagina = 1;
   const porPagina = 5;
 
   async function carregarVagas() {
-    // Tenta carregar do Supabase se estiver configurado
     if (supabaseClient) {
       const { data, error } = await supabaseClient
         .from('vagas')
         .select('*')
         .order('created_at', { ascending: false });
 
-      if (!error && data) {
+      if (!error && data && data.length > 0) {
         todasVagas = data;
       }
     }
@@ -139,7 +334,7 @@ nav{display:flex;justify-content:space-between;align-items:center;background:#7e
     lista.innerHTML = '';
 
     if(vagasFiltradas.length === 0){
-      lista.innerHTML = '<p style="text-align:center; padding:20px;">Nenhuma vaga encontrada.</p>';
+      lista.innerHTML = '<p style="text-align:center; padding:30px; font-size:1.1em;">Nenhuma vaga encontrada com os filtros selecionados.</p>';
       document.getElementById('pagination').innerHTML = '';
       return;
     }
@@ -148,8 +343,9 @@ nav{display:flex;justify-content:space-between;align-items:center;background:#7e
     const fim = inicio + porPagina;
 
     vagasFiltradas.slice(inicio, fim).forEach(vaga => {
+      const badgePcd = vaga.pcd ? `<div class="badge-pcd" aria-label="Vaga afirmativa ou exclusiva para Pessoa com Deficiência">♿ Vaga para PcD</div>` : '';
+
       lista.innerHTML += `
-      <div class="job-card">
-        <div class="job-title">${vaga.titulo}</div>
-        <div class="job-info">${vaga.empresa} • ${vaga.area} •${vaga.tipo}</div>
-        <div class="
+      <article class="job-card">
+        <h2 class="job-title">${vaga.titulo}</h2>
+        <div class="job-info">${vaga.empresa} • <strong>Área:</strong> ${vaga.area} • <strong>Tipo:</strong>${vaga
