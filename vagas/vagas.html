@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vagas - Flashwork (Acessível)</title>
+    <link rel="stylesheet" href="/vagas/vagas.css" />
+  </head>
+  <body>
+    <a href="#conteudo-principal" class="skip-link"
+      >Pular para o conteúdo principal</a
+    >
+
+    <nav aria-label="Navegação Principal">
+      <div class="nav-left">Flashwork</div>
+      <div class="nav-links">
+        <a href="/home/index.html">Início</a>
+      </div>
+    </nav>
+
+    <main id="conteudo-principal" class="container" tabindex="-1">
+      <!-- FILTROS DE BUSCA -->
+      <aside class="sidebar" aria-labelledby="titulo-filtros">
+        <h2 id="titulo-filtros">Filtros de Busca</h2>
+
+        <div class="filter">
+          <label for="search">Buscar vaga por palavra-chave</label>
+          <input
+            type="text"
+            id="search"
+            placeholder="Ex: Designer, Desenvolvedor..."
+          />
+        </div>
+
+        <div class="filter">
+          <label for="area">Área de Atuação</label>
+          <select id="area">
+            <option value="">Todas as Áreas</option>
+            <option>TI</option>
+            <option>Serviços Gerais</option>
+            <option>Design</option>
+            <option>Administrativo</option>
+            <option>Marketing</option>
+            <option>Outros</option>
+          </select>
+        </div>
+
+        <div class="filter">
+          <label for="tipo">Tipo de Contrato</label>
+          <select id="tipo">
+            <option value="">Todos os Tipos</option>
+            <option>CLT</option>
+            <option>Freelancer</option>
+          </select>
+        </div>
+
+        <div class="filter">
+          <label class="filter-checkbox" for="pcdOnly">
+            <input type="checkbox" id="pcdOnly" />
+            <span>♿ Apenas Vagas para PcD</span>
+          </label>
+        </div>
+
+        <button
+          class="btn"
+          style="width: 100%"
+          onclick="filtrar()"
+          aria-label="Aplicar os filtros selecionados"
+        >
+          Aplicar Filtros
+        </button>
+      </aside>
+
+      <!-- LISTA DE VAGAS -->
+      <section aria-labelledby="titulo-lista">
+        <h1
+          id="titulo-lista"
+          style="font-size: 1.5em; color: #6a3a8e; margin-top: 0"
+        >
+          Vagas Disponíveis
+        </h1>
+        <div class="jobs" id="jobs" role="region" aria-live="polite"></div>
+        <nav
+          class="pagination"
+          id="pagination"
+          aria-label="Paginação de vagas"
+        ></nav>
+      </section>
+    </main>
+
+    <!-- Widget VLibras -->
+    <div vw class="enabled">
+      <div vw-access-button class="active"></div>
+      <div vw-plugin-wrapper>
+        <div class="vw-plugin-top-wrapper"></div>
+      </div>
+    </div>
+  </body>
+  <script src="/vagas/vagas.js"></script>
+</html>

@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - Flashwork</title>
+    <link rel="stylesheet" href="login.css" />
+  </head>
+  <body>
+    <!-- Atalho de Acessibilidade -->
+    <a href="#conteudo-principal" class="skip-link"
+      >Pular para o formulário de login</a
+    >
+
+    <main id="conteudo-principal" class="login-container" tabindex="-1">
+      <h1>Acessar Flashwork</h1>
+
+      <form
+        onsubmit="
+          event.preventDefault();
+          handleLogin();
+        "
+      >
+        <div class="form-group">
+          <label for="username">Usuário *</label>
+          <input
+            type="text"
+            id="username"
+            required
+            placeholder="Digite o seu usuário"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="password">Senha *</label>
+          <input
+            type="password"
+            id="password"
+            required
+            placeholder="Digite a sua senha"
+          />
+        </div>
+
+        <button
+          type="submit"
+          class="btn"
+          aria-label="Entrar no painel da Flashwork"
+        >
+          Entrar
+        </button>
+      </form>
+
+      <div class="back-link">
+        <a href="index.html" aria-label="Voltar para a página inicial"
+          >← Voltar para o Início</a
+        >
+      </div>
+    </main>
+
+    <!-- Widget VLibras (Acessibilidade para Surdos e Deficientes Auditivos) -->
+    <div vw class="enabled">
+      <div vw-access-button class="active"></div>
+      <div vw-plugin-wrapper>
+        <div class="vw-plugin-top-wrapper"></div>
+      </div>
+    </div>
+  </body>
+  <script src="login.js"></script>
+</html>

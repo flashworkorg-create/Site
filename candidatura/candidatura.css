@@ -1,0 +1,136 @@
+/* Foco visível para acessibilidade */
+*:focus-visible {
+  outline: 3px solid #f39c12 !important;
+  outline-offset: 3px;
+}
+
+.skip-link {
+  position: absolute;
+  top: -50px;
+  left: 10px;
+  background: #6a3a8e;
+  color: #ffffff;
+  padding: 10px 15px;
+  z-index: 10000;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: top 0.2s;
+}
+.skip-link:focus {
+  top: 10px;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f7f4fa;
+  color: #222222;
+  line-height: 1.5;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #6a3a8e;
+  padding: 12px 30px;
+}
+.nav-left {
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 1.2em;
+}
+.nav-btn {
+  background: #ffffff;
+  color: #6a3a8e;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.container {
+  max-width: 650px;
+  margin: 30px auto;
+  padding: 30px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+}
+
+h1 {
+  color: #6a3a8e;
+  margin-top: 0;
+  font-size: 1.8em;
+}
+
+.vaga-destaque {
+  background: #fbf3fb;
+  border-left: 4px solid #6a3a8e;
+  padding: 12px 15px;
+  border-radius: 6px;
+  margin-bottom: 25px;
+  font-weight: bold;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 6px;
+  color: #444444;
+  font-size: 14px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+select,
+textarea,
+input[type="file"] {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #767676;
+  border-radius: 8px;
+  box-sizing: border-box;
+  font-size: 15px;
+}
+
+.btn-enviar {
+  width: 100%;
+  background: #6a3a8e;
+  color: #ffffff;
+  border: none;
+  padding: 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+  transition: background 0.2s;
+}
+
+.btn-enviar:hover,
+.btn-enviar:focus {
+  background: #522c70;
+}
+
+/* CAIXA DE SUCESSO APÓS ENVIAR */
+.mensagem-sucesso {
+  display: none;
+  background: #e8f8f0;
+  border: 2px solid #27ae60;
+  color: #1e7e44;
+  padding: 25px;
+  border-radius: 12px;
+  text-align: center;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+.mensagem-sucesso button {
+  margin-top: 20px;
+}

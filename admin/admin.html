@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin - Gerenciar Vagas</title>
+    <link rel="stylesheet" href="admin.css" />
+  </head>
+  <body>
+    <nav aria-label="Menu Admin">
+      <div><strong>Flashwork Admin</strong></div>
+      <div>
+        <a
+          href="/vagas/vagas.html"
+          style="color: #fff; text-decoration: none; margin-right: 20px"
+          >Ver Site</a
+        >
+        <button
+          id="btn-logout"
+          class="btn btn-danger"
+          style="display: none"
+          onclick="logout()"
+        >
+          Sair
+        </button>
+      </div>
+    </nav>
+
+    <main id="login-container" class="container">
+      <h1>Login Administrativo</h1>
+      <div class="form-group">
+        <label for="user">Usuário</label>
+        <input type="text" id="user" placeholder="Dica: admin" />
+      </div>
+      <div class="form-group">
+        <label for="pass">Senha</label>
+        <input type="password" id="pass" />
+      </div>
+      <button class="btn" onclick="login()">Entrar no Painel</button>
+    </main>
+
+    <div id="admin-content" style="display: none">
+      <div class="container">
+        <h2>Inserir Nova Vaga</h2>
+
+        <div class="form-group">
+          <label for="titulo">Título da Vaga</label>
+          <input type="text" id="titulo" />
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px">
+          <div class="form-group">
+            <label for="area">Área</label>
+            <select id="area">
+              <option>TI</option>
+              <option>Serviços Gerais</option>
+              <option>Design</option>
+              <option>Administrativo</option>
+              <option>Marketing</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="tipo">Tipo</label>
+            <select id="tipo">
+              <option>CLT</option>
+              <option>Freelancer</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="empresa">Empresa</label>
+          <input type="text" id="empresa" />
+        </div>
+
+        <div class="form-group">
+          <label for="linkVaga">Link da Vaga (URL)</label>
+          <input type="url" id="linkVaga" />
+        </div>
+
+        <div class="form-group">
+          <label
+            style="
+              cursor: pointer;
+              display: flex;
+              align-items: center;
+              gap: 8px;
+            "
+          >
+            <input type="checkbox" id="isPcd" style="width: auto" /> ♿ Vaga
+            afirmativa / exclusiva para PcD
+          </label>
+        </div>
+
+        <button class="btn" onclick="adicionarVaga()">Publicar Vaga</button>
+
+        <hr style="margin: 40px 0; border: 0; border-top: 1px solid #eee" />
+
+        <h2>Vagas Ativas</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Título</th>
+              <th>Empresa</th>
+              <th>PcD</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="lista-vagas-admin"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div vw class="enabled">
+      <div vw-access-button class="active"></div>
+      <div vw-plugin-wrapper><div class="vw-plugin-top-wrapper"></div></div>
+    </div>
+  </body>
+  <script src="admin.js"></script>
+</html>

@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Criar Conta Freelancer - Flashwork</title>
+    <link rel="stylesheet" href="loginfreela.css" />
+  </head>
+  <body>
+    <a href="#conteudo-principal" class="skip-link">Pular para o formulário</a>
+
+    <nav aria-label="Navegação Principal">
+      <div class="nav-left">Flashwork</div>
+      <button
+        class="nav-btn"
+        onclick="history.back()"
+        aria-label="Voltar para a página anterior"
+      >
+        ← Voltar
+      </button>
+    </nav>
+
+    <main id="conteudo-principal" class="container" tabindex="-1">
+      <div class="left">
+        <h1>Comece a ganhar hoje</h1>
+        <p>Crie seu perfil acessível e encontre trabalhos rapidamente.</p>
+      </div>
+
+      <div class="right">
+        <div class="form-box">
+          <h2>Crie seu perfil Freelancer</h2>
+
+          <!-- ETAPA 1 -->
+          <form
+            id="step1"
+            class="form-step active"
+            onsubmit="
+              event.preventDefault();
+              nextStep();
+            "
+          >
+            <div class="form-grid">
+              <div class="full">
+                <label for="email">E-mail</label>
+                <input
+                  id="email"
+                  type="email"
+                  required
+                  placeholder="seuemail@exemplo.com"
+                />
+              </div>
+              <div>
+                <label for="nome">Nome</label>
+                <input id="nome" type="text" required />
+              </div>
+              <div>
+                <label for="sobrenome">Sobrenome</label>
+                <input id="sobrenome" type="text" required />
+              </div>
+              <div class="full">
+                <label for="celular">Celular (somente números)</label>
+                <input
+                  id="celular"
+                  type="tel"
+                  required
+                  pattern="[0-9]+"
+                  placeholder="11999999999"
+                />
+              </div>
+            </div>
+            <button type="submit" class="btn">Continuar</button>
+          </form>
+
+          <!-- ETAPA 2 -->
+          <form
+            id="step2"
+            class="form-step"
+            onsubmit="
+              event.preventDefault();
+              criarConta();
+            "
+          >
+            <div class="form-grid">
+              <div class="full">
+                <label for="area">Área Principal</label>
+                <select id="area" required>
+                  <option value="">Selecione uma área</option>
+                  <option>Design</option>
+                  <option>Programação / TI</option>
+                  <option>Marketing</option>
+                  <option>Atendimento / Administrativo</option>
+                </select>
+              </div>
+              <div class="full">
+                <label for="descricao">Sobre você / Experiência</label>
+                <textarea id="descricao" rows="4" required></textarea>
+              </div>
+              <div class="full">
+                <label for="senha">Senha</label>
+                <input id="senha" type="password" required minlength="6" />
+              </div>
+            </div>
+            <button type="submit" class="btn">Concluir Cadastro</button>
+          </form>
+        </div>
+      </div>
+    </main>
+
+    <div vw class="enabled">
+      <div vw-access-button class="active"></div>
+      <div vw-plugin-wrapper><div class="vw-plugin-top-wrapper"></div></div>
+    </div>
+
+     <div vw class="enabled">
+      <div vw-access-button class="active"></div>
+      <div vw-plugin-wrapper>
+        <div class="vw-plugin-top-wrapper"></div>
+      </div>
+  </body>
+  <script src="loginfreela.js"></script>
+</html>
